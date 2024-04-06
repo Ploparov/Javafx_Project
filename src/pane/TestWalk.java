@@ -27,7 +27,6 @@ public class TestWalk extends StackPane {
 
     public TestWalk() {
 
-
         System.out.println("testwalk");
         this.setWidth(screenWidth);
         this.setHeight(screenHeight);

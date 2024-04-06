@@ -11,12 +11,16 @@ public class Player extends ImageView {
     public String[] CIdle = {"Cat/CatIdle/idle1.png","Cat/CatIdle/idle2.png"};
     private int speed = 5;
 
+
     public Player() {
         super("Cat/CatFront/runfrontpng1.png");
         setFitHeight(200);
         setFitWidth(100);
         setDefaultValues();
+
+
     }
+
 
     public void setDefaultValues() {
         setSpeed(4);
@@ -30,4 +34,6 @@ public class Player extends ImageView {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+
+
 }

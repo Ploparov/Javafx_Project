@@ -1,14 +1,13 @@
 package pane;
 
+import item.GroupObjectActivable;
+import item.Object;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import Game.Player;
-
-import java.util.Arrays;
-import java.util.Iterator;
 
 public class GameMap extends StackPane {
     final int tileSize = 48; //16*16*3
@@ -24,9 +23,24 @@ public class GameMap extends StackPane {
     private boolean movingRight = false;
     int currentFrameIndex = 0;
 
+    private GroupObjectActivable clothbucket;
+
+    private ImageView buttonE;
+    private boolean isPressE;
 
     public GameMap() {
         WallBack();
+
+        place("Component/WashingMachine/WashingMachine.png",150,150,0,-150);
+//        place("Component/WashingMachine/ClothBucket.png",150,150,150,-145);
+        clothbucket = new GroupObjectActivable("Component/WashingMachine/ClothBucket.png");
+        clothbucket.setTranslateX(150);
+        clothbucket.setTranslateY(-145);
+        clothbucket.setScaleX(0.2);
+        clothbucket.setScaleY(0.2);
+        getChildren().add(clothbucket);
+
+
 
         System.out.println("testwalk");
         this.setWidth(screenWidth);
@@ -37,6 +51,15 @@ public class GameMap extends StackPane {
         startAnimation();
 
         WallFront();
+
+        buttonE = new ImageView("UI/ebutton/E_Button1.png");
+        buttonE.setFitWidth(100);
+        buttonE.setFitHeight(100);
+        buttonE.setTranslateX(0);
+        buttonE.setTranslateY(300);
+        getChildren().add(buttonE);
+        buttonE.setVisible(false);
+        isPressE = false;
     }
 
     public void setKeyHandlers() {
@@ -58,7 +81,9 @@ public class GameMap extends StackPane {
                 movingRight = true;
                 lastPressedTime = currentTime;
                 System.out.println("true");
-            }
+            } else if (event.getCode() == KeyCode.E){
+                buttonE.setImage(new Image("UI/ebutton/E_Button2.png"));
+        }
         });
 
         this.setOnKeyReleased(event -> {
@@ -78,6 +103,8 @@ public class GameMap extends StackPane {
                 movingRight = false;
                 System.out.println("false");
                 currentFrameIndex = 0;
+            } else if (event.getCode() == KeyCode.E){
+                buttonE.setImage(new Image("UI/ebutton/E_Button1.png"));
             }
         });
     }
@@ -91,9 +118,18 @@ public class GameMap extends StackPane {
                 ifAnimationSideRight(now);
                 ifAnimationSideLeft(now);
                 ifAnimationIdle(now);
+                showE();
             }
         };
         timer.start();
+    }
+
+    public void showE(){
+        if(clothbucket.Canselect(player)){
+            buttonE.setVisible(true);
+        }else {
+            buttonE.setVisible(false);
+        }
     }
 
     public  void ifAnimationFrontDown(long now){
@@ -174,7 +210,8 @@ public class GameMap extends StackPane {
         if (movingRight) {
             player.setTranslateX(player.getTranslateX() + 5);
         }
-        System.out.println("x"+player.getTranslateX());
+//        System.out.println("X : "+player.getTranslateX());
+//        System.out.println("Y : "+player.getTranslateY());
     }
 
     public void WallBack(){
@@ -193,11 +230,14 @@ public class GameMap extends StackPane {
 
 
     public void place(String s,double w,double h,double x,double y){
-        ImageView obj = new ImageView(s);
+//        ImageView obj = new ImageView(s);
+        Object obj = new Object(s);
         obj.setFitWidth(w);
         obj.setFitHeight(h);
         obj.setTranslateX(x);
         obj.setTranslateY(y);
+
         getChildren().add(obj);
+
     }
 }
