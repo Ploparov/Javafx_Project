@@ -16,11 +16,6 @@ public class Goto {
         rootPane.getChildren().add(new MainMenu());
     }
 
-    public static void mapPage(){
-        clear();
-        rootPane.getChildren().add(new map());
-    }
-
     public static void test(){
         clear();
         rootPane.getChildren().add(new GameMap());

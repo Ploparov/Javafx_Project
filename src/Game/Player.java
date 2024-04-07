@@ -1,8 +1,13 @@
 package Game;
 
+import item.MapGroup;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 public class Player extends ImageView {
     public String[] CR_front = {"Cat/CatFront/runfrontpng1.png", "Cat/CatFront/runfrontpng2.png", "Cat/CatFront/runfrontpng3.png","Cat/CatFront/runfrontpng4.png","Cat/CatFront/runfrontpng5.png","Cat/CatFront/runfrontpng6.png","Cat/CatFront/runfrontpng7.png","Cat/CatFront/runfrontpng8.png"};
@@ -11,6 +16,11 @@ public class Player extends ImageView {
     public String[] CIdle = {"Cat/CatIdle/idle1.png","Cat/CatIdle/idle2.png"};
     private int speed = 5;
 
+    private Rectangle hitbox;
+
+    private double hitboxX;
+    private double hitboxY;
+
 
     public Player() {
         super("Cat/CatFront/runfrontpng1.png");
@@ -18,7 +28,31 @@ public class Player extends ImageView {
         setFitWidth(100);
         setDefaultValues();
 
+        hitbox = new Rectangle(getFitWidth(), getFitHeight());
+        hitbox.setTranslateX(getHitboxX());
+        hitbox.setTranslateY(getHitboxY());
+        hitbox.setStroke(Color.RED);
+        hitbox.setFill(Color.TRANSPARENT);
 
+
+        // Add the hitbox to the player's parent group
+        this.parentProperty().addListener((obs, oldParent, newParent) -> {
+            if (newParent != null) {
+                ((Group) newParent).getChildren().add(hitbox);
+            }
+            if (oldParent != null) {
+                ((Group) oldParent).getChildren().remove(hitbox);
+            }
+        });
+
+        this.translateXProperty().addListener((obs, oldX, newX) -> hitbox.setTranslateX(newX.doubleValue()));
+        this.translateYProperty().addListener((obs, oldY, newY) -> hitbox.setTranslateY(newY.doubleValue()));
+    }
+
+    public boolean collidesWith(MapGroup other) {
+        //System.out.println("FFFFFFFFFFFFF");
+        Shape intersection = Shape.intersect(this.hitbox, other.getHitbox());
+        return !intersection.getBoundsInLocal().isEmpty();
     }
 
 
@@ -35,5 +69,23 @@ public class Player extends ImageView {
         this.speed = speed;
     }
 
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
 
+    public double getHitboxX() {
+        return hitboxX;
+    }
+
+    public void setHitboxX(double hitboxX) {
+        this.hitboxX = hitboxX;
+    }
+
+    public double getHitboxY() {
+        return hitboxY;
+    }
+
+    public void setHitboxY(double hitboxY) {
+        this.hitboxY = hitboxY;
+    }
 }
