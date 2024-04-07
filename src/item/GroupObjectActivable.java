@@ -11,10 +11,10 @@ public class GroupObjectActivable extends Group {
     public Object instance;
     public ImageView button;
     public GroupObjectActivable(String name){
-        Object i = new Object(name);
-        i.setTranslateY(0);
-        i.setTranslateX(0);
-        getChildren().add(i);
+        instance = new Object(name);
+        instance.setTranslateY(0);
+        instance.setTranslateX(0);
+        getChildren().add(instance);
 
 //        button = new ImageView("UI/ebutton/E_Button1.png");
 //        button.setFitWidth(200);
@@ -26,8 +26,8 @@ public class GroupObjectActivable extends Group {
     }
     public boolean Canselect(Player player){
         if(
-                player.getTranslateX() >= this.getTranslateX() -100
-                        && player.getTranslateX() <= this.getTranslateX() +100
+                player.getTranslateX() >= this.getTranslateX() -80
+                        && player.getTranslateX() <= this.getTranslateX() +80
                         && player.getTranslateY() >= this.getTranslateY() - 100
                         && player.getTranslateY() <= this.getTranslateY() + 100
         ){

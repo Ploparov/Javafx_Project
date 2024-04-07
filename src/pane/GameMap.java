@@ -2,6 +2,9 @@ package pane;
 
 import item.GroupObjectActivable;
 import item.Object;
+import item.component.Bin;
+import item.component.Sink;
+import item.component.washingMachine;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,17 +25,42 @@ public class GameMap extends StackPane {
     private boolean movingLeft = false;
     private boolean movingRight = false;
     int currentFrameIndex = 0;
-
     private GroupObjectActivable clothbucket;
 
     private ImageView buttonE;
-    private boolean isPressE;
+    private washingMachine washingmachine;
+    private Bin bin;
+    private Sink sink;
+    boolean isPressE = false;
+
 
     public GameMap() {
         WallBack();
 
-        place("Component/WashingMachine/WashingMachine.png",150,150,0,-150);
+//        place("Component/WashingMachine/WashingMachine.png",150,150,0,-150);
 //        place("Component/WashingMachine/ClothBucket.png",150,150,150,-145);
+        washingmachine = new washingMachine();
+        washingmachine.setScaleX(0.2);
+        washingmachine.setScaleY(0.2);
+        washingmachine.setTranslateY(-150);
+        getChildren().add(washingmachine);
+
+        bin = new Bin();
+        bin.setScaleX(0.2);
+        bin.setScaleY(0.2);
+        bin.setTranslateX(-125);
+        bin.setTranslateY(-150);
+        getChildren().add(bin);
+        bin.taskAlert();
+
+        sink = new Sink();
+        sink.setScaleX(0.3);
+        sink.setScaleY(0.3);
+        sink.setTranslateX(-250);
+        sink.setTranslateY(-175);
+        getChildren().add(sink);
+        sink.taskAlert();
+
         clothbucket = new GroupObjectActivable("Component/WashingMachine/ClothBucket.png");
         clothbucket.setTranslateX(150);
         clothbucket.setTranslateY(-145);
@@ -59,7 +87,7 @@ public class GameMap extends StackPane {
         buttonE.setTranslateY(300);
         getChildren().add(buttonE);
         buttonE.setVisible(false);
-        isPressE = false;
+
     }
 
     public void setKeyHandlers() {
@@ -83,6 +111,7 @@ public class GameMap extends StackPane {
                 System.out.println("true");
             } else if (event.getCode() == KeyCode.E){
                 buttonE.setImage(new Image("UI/ebutton/E_Button2.png"));
+                isPressE = true;
         }
         });
 
@@ -105,6 +134,7 @@ public class GameMap extends StackPane {
                 currentFrameIndex = 0;
             } else if (event.getCode() == KeyCode.E){
                 buttonE.setImage(new Image("UI/ebutton/E_Button1.png"));
+                isPressE = false;
             }
         });
     }
@@ -125,8 +155,13 @@ public class GameMap extends StackPane {
     }
 
     public void showE(){
-        if(clothbucket.Canselect(player)){
+        if(clothbucket.Canselect(player) || washingmachine.Canselect(player) || bin.Canselect(player) || sink.Canselect(player)){
             buttonE.setVisible(true);
+            if(isPressE){
+                if(washingmachine.Canselect(player)){washingmachine.Active();}
+                else if (bin.Canselect(player)) { bin.Active(); }
+                else if (sink.Canselect(player)) { sink.Active(); }
+            }
         }else {
             buttonE.setVisible(false);
         }
