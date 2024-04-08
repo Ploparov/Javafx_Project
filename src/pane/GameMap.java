@@ -70,7 +70,7 @@ public class GameMap extends StackPane {
 
 
 
-        System.out.println("testwalk");
+        //System.out.println("testwalk");
         this.setWidth(screenWidth);
         this.setHeight(screenHeight);
         this.setFocusTraversable(true);
@@ -96,19 +96,19 @@ public class GameMap extends StackPane {
             if (event.getCode() == KeyCode.W) {
                 movingUp = true;
                 lastPressedTime = currentTime;
-                System.out.println("true");
+                //System.out.println("true");
             } else if (event.getCode() == KeyCode.A) {
                 movingLeft = true;
                 lastPressedTime = currentTime;
-                System.out.println("true");
+                //System.out.println("true");
             } else if (event.getCode() == KeyCode.S) {
                 movingDown = true;
                 lastPressedTime = currentTime;
-                System.out.println("true");
+                //System.out.println("true");
             } else if (event.getCode() == KeyCode.D) {
                 movingRight = true;
                 lastPressedTime = currentTime;
-                System.out.println("true");
+                //System.out.println("true");
             } else if (event.getCode() == KeyCode.E){
                 buttonE.setImage(new Image("UI/ebutton/E_Button2.png"));
                 isPressE = true;
@@ -118,19 +118,19 @@ public class GameMap extends StackPane {
         this.setOnKeyReleased(event -> {
             if (event.getCode() == KeyCode.W) {
                 movingUp = false;
-                System.out.println("false");
+                //System.out.println("false");
                 currentFrameIndex = 0;
             } else if (event.getCode() == KeyCode.A) {
                 movingLeft = false;
-                System.out.println("false");
+                //System.out.println("false");
                 currentFrameIndex = 0;
             } else if (event.getCode() == KeyCode.S) {
                 movingDown = false;
-                System.out.println("false");
+                //System.out.println("false");
                 currentFrameIndex = 0;
             } else if (event.getCode() == KeyCode.D) {
                 movingRight = false;
-                System.out.println("false");
+                //System.out.println("false");
                 currentFrameIndex = 0;
             } else if (event.getCode() == KeyCode.E){
                 buttonE.setImage(new Image("UI/ebutton/E_Button1.png"));
@@ -172,8 +172,8 @@ public class GameMap extends StackPane {
             long elapsedTime = now - lastPressedTime;
             if (elapsedTime >= 20_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                System.out.println(currentFrameIndex);
-                System.out.println(player.CR_front[currentFrameIndex % 8]);
+                //System.out.println(currentFrameIndex);
+                //System.out.println(player.CR_front[currentFrameIndex % 8]);
                 player.setImage(new Image(player.CR_front[currentFrameIndex % 8]));
                 currentFrameIndex++;
 
@@ -188,8 +188,8 @@ public class GameMap extends StackPane {
             if (elapsedTime >= 20_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
 
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                System.out.println(currentFrameIndex);
-                System.out.println(player.CR_side_right[currentFrameIndex % 10]);
+                //System.out.println(currentFrameIndex);
+                //System.out.println(player.CR_side_right[currentFrameIndex % 10]);
                 player.setImage(new Image(player.CR_side_right[currentFrameIndex % 10]));
                 currentFrameIndex++;
 
@@ -205,8 +205,8 @@ public class GameMap extends StackPane {
             if (elapsedTime >= 20_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
 
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                System.out.println(currentFrameIndex);
-                System.out.println(player.CR_side_left[currentFrameIndex % 10]);
+                //System.out.println(currentFrameIndex);
+                //System.out.println(player.CR_side_left[currentFrameIndex % 10]);
                 player.setImage(new Image(player.CR_side_left[currentFrameIndex % 10]));
                 currentFrameIndex++;
 
@@ -221,8 +221,8 @@ public class GameMap extends StackPane {
             if (elapsedTime >= 500_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
 
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                System.out.println(currentFrameIndex);
-                System.out.println(player.CIdle[currentFrameIndex % 2]);
+                //System.out.println(currentFrameIndex);
+                //System.out.println(player.CIdle[currentFrameIndex % 2]);
                 player.setImage(new Image(player.CIdle[currentFrameIndex % 2]));
                 currentFrameIndex++;
 

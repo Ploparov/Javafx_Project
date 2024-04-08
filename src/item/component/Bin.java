@@ -5,8 +5,11 @@ import Interface.taskAble;
 import Interface.activeAble;
 import item.Object;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 public class Bin extends GroupObjectActivable implements taskAble,activeAble{
     private ImageView alert;
@@ -35,27 +38,42 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
 
     @Override
     public void taskAlert() {
+        currentWaitFrameIndex = 17;
         isAlert = true;
-        this.instance.setImage(new Image("Component/bin/bin2.png"));
-        alert.setVisible(true);
+        this.instance.setImage(new Image("Component/bin/bin1.png"));
+        alert.setVisible(false);
         alert.setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+
                 long elapsedTime = now - lastUpdateTime;
                 if (elapsedTime >= 500_000_000) { // 100 milliseconds in nanoseconds
+
                     alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
                     currentWaitFrameIndex++;
                     if (currentWaitFrameIndex >= 17) {
                         currentWaitFrameIndex = 0;
-                        alert.setVisible(false);
-                        stop(); // Stop the AnimationTimer
+                        alert.setVisible(true);
+                        instance.setImage(new Image("Component/bin/bin2.png"));
+                        //stop(); // Stop the AnimationTimer
+                    }
+                    else if(!isAlert){
+                        currentWaitFrameIndex = 17;
+                        isAlert = true;
                     }
                     lastUpdateTime = now; // Reset the last update time for timing
                 }
             }
         };
-        timer.start();
+        // Define the Timeline with a KeyFrame that starts the AnimationTimer every 2 seconds
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()), event -> {
+            timer.start();
+            System.out.println("MARK");
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
+        timeline.play();
+
     }
 
     @Override

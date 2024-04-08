@@ -4,8 +4,11 @@ import Interface.activeAble;
 import Interface.taskAble;
 import item.GroupObjectActivable;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 public class Sink extends GroupObjectActivable implements taskAble, activeAble {
     private ImageView alert;
@@ -16,6 +19,7 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
     private int currentActiveFrameIndex = 0;
     private final String[] waitRedImage = {"UI/Wait/WaitRed/WaitRed1.png", "UI/Wait/WaitRed/WaitRed2.png", "UI/Wait/WaitRed/WaitRed3.png", "UI/Wait/WaitRed/WaitRed4.png", "UI/Wait/WaitRed/WaitRed5.png", "UI/Wait/WaitRed/WaitRed6.png", "UI/Wait/WaitRed/WaitRed7.png", "UI/Wait/WaitRed/WaitRed8.png", "UI/Wait/WaitRed/WaitRed9.png", "UI/Wait/WaitRed/WaitRed10.png", "UI/Wait/WaitRed/WaitRed11.png", "UI/Wait/WaitRed/WaitRed12.png", "UI/Wait/WaitRed/WaitRed13.png", "UI/Wait/WaitRed/WaitRed14.png", "UI/Wait/WaitRed/WaitRed15.png", "UI/Wait/WaitRed/WaitRed16.png", "UI/Wait/WaitRed/WaitRed17.png"};
     private final String[] waitBlueImage = {"UI/Wait/WaitBlue/WaitBlue1.png", "UI/Wait/WaitBlue/WaitBlue2.png", "UI/Wait/WaitBlue/WaitBlue3.png", "UI/Wait/WaitBlue/WaitBlue4.png", "UI/Wait/WaitBlue/WaitBlue5.png", "UI/Wait/WaitBlue/WaitBlue6.png", "UI/Wait/WaitBlue/WaitBlue7.png", "UI/Wait/WaitBlue/WaitBlue8.png", "UI/Wait/WaitBlue/WaitBlue9.png", "UI/Wait/WaitBlue/WaitBlue10.png", "UI/Wait/WaitBlue/WaitBlue11.png", "UI/Wait/WaitBlue/WaitBlue12.png", "UI/Wait/WaitBlue/WaitBlue13.png", "UI/Wait/WaitBlue/WaitBlue14.png", "UI/Wait/WaitBlue/WaitBlue15.png", "UI/Wait/WaitBlue/WaitBlue16.png", "UI/Wait/WaitBlue/WaitBlue17.png"};
+
     public Sink() {
         super("Component/Sink/sink_withoutbowl.png");
 
@@ -33,22 +37,33 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
     @Override
     public void taskAlert() {
         isAlert = true;
-        this.instance.setImage(new Image("Component/Sink/sink_withbowl.png"));
-        alert.setVisible(true);
+        this.instance.setImage(new Image("Component/Sink/sink_withoutbowl.png"));
+        alert.setVisible(false);
         alert.setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if(isAlert){
+                    //alert.setVisible(true);
                 AlertAnimation(now);}
                 else {
                 ActiveAnimation();}
             }
         };
-        timer.start();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()*10), event -> {
+            isAlert= true;
+            System.out.println("START");
+            System.out.println(isAlert);
+            timer.start();
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
+        timeline.play();
     }
 
     public void AlertAnimation(long now){
+
+        alert.setVisible(true);
+        instance.setImage(new Image("Component/Sink/sink_withbowl.png"));
 
         long elapsedTime = now - lastUpdateTime;
         if (elapsedTime >= 500_000_000) { // 100 milliseconds in nanoseconds
@@ -69,14 +84,17 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
             if(holdAction >= 20){
                 currentActiveFrameIndex++;
                 holdAction = 0;
+                //isAlert = false;
             }
             alert.setImage(new Image(waitBlueImage[currentActiveFrameIndex % 17]));
-            isAlert = true;
+            //isAlert = true;
             if (currentActiveFrameIndex >= 17) {
+                System.out.println("Before setting isAlert: " + isAlert);
+                //isAlert= true;
+                System.out.println("After setting isAlert: " + isAlert);
                 currentActiveFrameIndex = 0;
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);
-                isAlert = false;
                 instance.setImage(new Image("Component/Sink/sink_withoutbowl.png"));
 //                stop(); // Stop the AnimationTimer
             }
