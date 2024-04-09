@@ -1,8 +1,14 @@
 package Game;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class Player extends ImageView {
     public String[] CR_front = {"Cat/CatFront/runfrontpng1.png", "Cat/CatFront/runfrontpng2.png", "Cat/CatFront/runfrontpng3.png","Cat/CatFront/runfrontpng4.png","Cat/CatFront/runfrontpng5.png","Cat/CatFront/runfrontpng6.png","Cat/CatFront/runfrontpng7.png","Cat/CatFront/runfrontpng8.png"};
@@ -11,6 +17,10 @@ public class Player extends ImageView {
     public String[] CIdle = {"Cat/CatIdle/idle1.png","Cat/CatIdle/idle2.png"};
     private int speed = 5;
 
+    private int score = 0;
+
+    private Text scoreText;
+
 
     public Player() {
         super("Cat/CatFront/runfrontpng1.png");
@@ -18,7 +28,11 @@ public class Player extends ImageView {
         setFitWidth(100);
         setDefaultValues();
 
-
+        scoreText = new Text();
+        scoreText.setText(Integer.toString(score));
+        scoreText.setFont(Font.font("Arial", FontWeight.BOLD, 80)); // Set font to Arial, bold, size 24
+        StackPane.setAlignment(scoreText, Pos.TOP_LEFT); // Align the text to the top-left
+        StackPane.setMargin(scoreText, new Insets(10));
     }
 
 
@@ -35,5 +49,15 @@ public class Player extends ImageView {
         this.speed = speed;
     }
 
+    public int getScore() {
+        return score;
+    }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public Text getScoreText() {
+        return scoreText;
+    }
 }
