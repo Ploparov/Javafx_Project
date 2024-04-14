@@ -2,9 +2,7 @@ package pane;
 
 import item.GroupObjectActivable;
 import item.Object;
-import item.component.Bin;
-import item.component.Sink;
-import item.component.washingMachine;
+import item.component.*;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,10 +29,14 @@ public class GameMap extends StackPane {
     private washingMachine washingmachine;
     private Bin bin;
     private Sink sink;
+    private waterOnTheFloor wateronthefloor;
+    private rider rider;
+    private GasStove gasStove;
     boolean isPressE = false;
 
 
     public GameMap() {
+        HouseFloor();
         WallBack();
 
 //        place("Component/WashingMachine/WashingMachine.png",150,150,0,-150);
@@ -61,12 +63,31 @@ public class GameMap extends StackPane {
         getChildren().add(sink);
         sink.taskAlert();
 
+        wateronthefloor = new waterOnTheFloor();
+        wateronthefloor.setScaleX(0.2);
+        wateronthefloor.setScaleY(0.2);
+        wateronthefloor.setTranslateX(300);
+        wateronthefloor.setTranslateY(0);
+        getChildren().add(wateronthefloor);
+        wateronthefloor.taskAlert();
+
+        gasStove = new GasStove();
+        gasStove.setScaleX(0.3);
+        gasStove.setScaleY(0.3);
+        gasStove.setTranslateX(-440);
+        gasStove.setTranslateY(0);
+        getChildren().add(gasStove);
+
+
+
         clothbucket = new GroupObjectActivable("Component/WashingMachine/ClothBucket.png");
         clothbucket.setTranslateX(150);
         clothbucket.setTranslateY(-145);
         clothbucket.setScaleX(0.2);
         clothbucket.setScaleY(0.2);
         getChildren().add(clothbucket);
+
+
 
 
 
@@ -78,7 +99,15 @@ public class GameMap extends StackPane {
         setKeyHandlers();
         startAnimation();
 
+
         WallFront();
+
+        rider = new rider();
+        rider.setScaleX(0.4);
+        rider.setScaleY(0.4);
+        rider.setTranslateX(650);
+        rider.setTranslateY(150);
+        getChildren().add(rider);
 
         buttonE = new ImageView("UI/ebutton/E_Button1.png");
         buttonE.setFitWidth(100);
@@ -251,16 +280,69 @@ public class GameMap extends StackPane {
 
     public void WallBack(){
         place("Component/Wall/wall_noborder.png",1000,250,0,-250);
-        place("Component/Wall/wall_side.png",200,150,-500,-300);
-        place("Component/Wall/wall_side_border.png",200,200,-500,-200);
+//        place("Component/Wall/wall_side.png",200,150,-500,-300);
+//        place("Component/Wall/wall_side_border.png",200,200,-500,-200);
         place("Component/Wall/wall_side.png",200,250,500,-250);
         place("Component/Wall/wall_side_border.png",200,200,500,-100);
+        place("Component/Wall/door.png",200,250,430,-75);
     }
 
     public void WallFront(){
-        place("Component/Wall/wall_side.png",200,500,-500,150);
         place("Component/Wall/wall_noborder.png",1000,250,0,400);
+        place("Component/Wall/wall_side.png",200,400,500,200);
+        place("Component/Wall/wall_side.png",200,850,-500,50);
 
+    }
+    public  void HouseFloor(){
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-800,-350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-600,-350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-400,-350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-200,-350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,0,-350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,200,-350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,400,-350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,600,-350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,800,-350);
+
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-800,-150);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-600,-150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,-400,-150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,-200,-150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,0,-150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,200,-150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,400,-150);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,600,-150);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,800,-150);
+
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-800,-50);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-600,-50);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,-400,-50);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,-200,-50);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,0,-50);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,200,-50);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,400,-50);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,600,-50);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,800,-50);
+
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-800,150);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-600,150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,-400,150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,-200,150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,0,150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,200,150);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,400,150);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,600,150);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,800,150);
+
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-800,350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,-600,350);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,-400,350);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,-200,350);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,0,350);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,200,350);
+        place("Component/Floor/HouseFloor/HouseFloor.png",200,200,400,350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,600,350);
+        place("Component/Floor/GrassFloor/GrassFloor.png",200,200,800,350);
     }
 
 
