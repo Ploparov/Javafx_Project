@@ -16,6 +16,7 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
     private boolean isAlert = false;
     private long lastUpdateTime;
     private int currentWaitFrameIndex = 0;
+    private double multiply = 0.9;
     private final String[] waitRedImage = {"UI/Wait/WaitRed/WaitRed1.png", "UI/Wait/WaitRed/WaitRed2.png", "UI/Wait/WaitRed/WaitRed3.png", "UI/Wait/WaitRed/WaitRed4.png", "UI/Wait/WaitRed/WaitRed5.png", "UI/Wait/WaitRed/WaitRed6.png", "UI/Wait/WaitRed/WaitRed7.png", "UI/Wait/WaitRed/WaitRed8.png", "UI/Wait/WaitRed/WaitRed9.png", "UI/Wait/WaitRed/WaitRed10.png", "UI/Wait/WaitRed/WaitRed11.png", "UI/Wait/WaitRed/WaitRed12.png", "UI/Wait/WaitRed/WaitRed13.png", "UI/Wait/WaitRed/WaitRed14.png", "UI/Wait/WaitRed/WaitRed15.png", "UI/Wait/WaitRed/WaitRed16.png", "UI/Wait/WaitRed/WaitRed17.png"};
 
 
@@ -48,7 +49,7 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
             public void handle(long now) {
 
                 long elapsedTime = now - lastUpdateTime;
-                if (elapsedTime >= 500_000_000) { // 100 milliseconds in nanoseconds
+                if (elapsedTime >= 500_000_000 * multiply) { // 100 milliseconds in nanoseconds
 
                     alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
                     currentWaitFrameIndex++;
@@ -78,8 +79,11 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
 
     @Override
     public void Active() {
-        isAlert = false;
-        alert.setVisible(false);
-        this.instance.setImage(new Image("Component/bin/bin1.png"));
+        if(isAlert) {
+            multiply *= 0.9;
+            isAlert = false;
+            alert.setVisible(false);
+            this.instance.setImage(new Image("Component/bin/bin1.png"));
+        }
     }
 }

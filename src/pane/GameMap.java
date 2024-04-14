@@ -4,11 +4,16 @@ import item.GroupObjectActivable;
 import item.Object;
 import item.component.*;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import Game.Player;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class GameMap extends StackPane {
     final int tileSize = 48; //16*16*3
@@ -86,6 +91,11 @@ public class GameMap extends StackPane {
         clothbucket.setScaleX(0.2);
         clothbucket.setScaleY(0.2);
         getChildren().add(clothbucket);
+
+        //add score
+        getChildren().add(player.getScoreText());
+
+
 
 
 
@@ -178,6 +188,7 @@ public class GameMap extends StackPane {
                 ifAnimationSideLeft(now);
                 ifAnimationIdle(now);
                 showE();
+
             }
         };
         timer.start();
