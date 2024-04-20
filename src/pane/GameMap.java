@@ -39,6 +39,11 @@ public class GameMap extends StackPane {
     private GasStove gasStove;
     boolean isPressE = false;
 
+    double minX = -285.0; // Minimum x value
+    double maxX = 280.0; // Maximum x value
+    double minY = -80.0; // Minimum y value
+    double maxY = 140.0; // Maximum y value
+
 
     public GameMap() {
         HouseFloor();
@@ -71,8 +76,8 @@ public class GameMap extends StackPane {
         wateronthefloor = new waterOnTheFloor();
         wateronthefloor.setScaleX(0.2);
         wateronthefloor.setScaleY(0.2);
-        wateronthefloor.setTranslateX(300);
-        wateronthefloor.setTranslateY(0);
+        wateronthefloor.setTranslateX(minX + (Math.random() * (maxX - minX)));
+        wateronthefloor.setTranslateY(minY + (Math.random() * (maxY - minY)));
         getChildren().add(wateronthefloor);
         wateronthefloor.taskAlert();
 
@@ -119,6 +124,7 @@ public class GameMap extends StackPane {
         rider.setTranslateX(650);
         rider.setTranslateY(150);
         getChildren().add(rider);
+        rider.taskAlert();
 
         buttonE = new ImageView("UI/ebutton/E_Button1.png");
         buttonE.setFitWidth(100);
@@ -196,14 +202,19 @@ public class GameMap extends StackPane {
     }
 
     public void showE(){
-        if(clothbucket.Canselect(player) || washingmachine.Canselect(player) || bin.Canselect(player) || sink.Canselect(player) || wateronthefloor.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) || gasStove.Canselect(player)){
+        if(clothbucket.Canselect(player) || washingmachine.Canselect(player) || bin.Canselect(player) || sink.Canselect(player) || wateronthefloor.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) ){
             buttonE.setVisible(true);
             if(isPressE){
                 if(washingmachine.Canselect(player)){washingmachine.Active();}
                 else if (bin.Canselect(player)) { bin.Active(); }
                 else if (sink.Canselect(player)) { sink.Active(); }
-                else if (wateronthefloor.Canselect(player)) { wateronthefloor.Active(); }
                 else if (gasStove.Canselect(player)) { gasStove.Active(); }
+                else if (rider.Canselect(player)) { rider.Active(); }
+                else if (wateronthefloor.Canselect(player)) {
+                    wateronthefloor.setTranslateX(minX + (Math.random() * (maxX - minX)));
+                    wateronthefloor.setTranslateY(minY + (Math.random() * (maxY - minY)));
+                    wateronthefloor.Active();
+                }
             }
         }else {
             buttonE.setVisible(false);
@@ -288,8 +299,8 @@ public class GameMap extends StackPane {
         if (movingRight) {
             player.setTranslateX(player.getTranslateX() + 5);
         }
-//        System.out.println("X : "+player.getTranslateX());
-//        System.out.println("Y : "+player.getTranslateY());
+        System.out.println("X : "+player.getTranslateX());
+        System.out.println("Y : "+player.getTranslateY());
     }
 
     public void WallBack(){

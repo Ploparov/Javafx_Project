@@ -43,7 +43,7 @@ public class waterOnTheFloor extends GroupObjectActivable implements taskAble, a
         currentWaitFrameIndex = 17;
         isAlert = true;
         alert.setVisible(false);
-        this.setVisible(true);
+        this.setVisible(false);
         alert.setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
         AnimationTimer timer = new AnimationTimer() {
             @Override
