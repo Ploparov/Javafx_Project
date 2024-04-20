@@ -13,7 +13,7 @@ import javafx.util.Duration;
 import java.awt.*;
 
 public class waterOnTheFloor extends GroupObjectActivable implements taskAble, activeAble {
-    private ImageView alert;
+    private final ImageView alert;
     private boolean isAlert = false;
     private long lastUpdateTime;
     private int holdAction = 0;
@@ -24,7 +24,7 @@ public class waterOnTheFloor extends GroupObjectActivable implements taskAble, a
 
     public waterOnTheFloor() {
         super("Component/WaterOnTheFloor/waterOnthefloor.png");
-        this.setVisible(false);
+        this.setVisible(true);
 
         alert = new ImageView("UI/Wait/WaitRed/WaitRed1.png");
         alert.setFitWidth(200);
@@ -70,8 +70,9 @@ public class waterOnTheFloor extends GroupObjectActivable implements taskAble, a
         };
         // Define the Timeline with a KeyFrame that starts the AnimationTimer every 2 seconds
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()), event -> {
+            this.setVisible(true);
             timer.start();
-            System.out.println("MARK");
+            //System.out.println("MARK");
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();

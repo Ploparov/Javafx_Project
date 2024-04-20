@@ -12,19 +12,19 @@ public class KeyHandler {
     public void keyPressed(KeyEvent e) {
         KeyCode code = e.getCode();
         if (code == KeyCode.W || code == KeyCode.UP) {
-            System.out.println("w");
+            //System.out.println("w");
             setUpPressed(true);
         }
         if (code == KeyCode.S || code == KeyCode.DOWN) {
-            System.out.println("s");
+            //System.out.println("s");
             setDownPressed(true);
         }
         if (code == KeyCode.A || code == KeyCode.LEFT) {
-            System.out.println("a");
+            //System.out.println("a");
             setLeftPressed(true);
         }
         if (code == KeyCode.D || code == KeyCode.RIGHT) {
-            System.out.println("d");
+            //System.out.println("d");
             setRightPressed(true);
         }
     }

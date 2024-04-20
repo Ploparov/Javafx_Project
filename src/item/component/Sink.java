@@ -52,8 +52,8 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
         };
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()*10), event -> {
             isAlert= true;
-            System.out.println("START");
-            System.out.println(isAlert);
+            //System.out.println("START");
+            //System.out.println(isAlert);
             timer.start();
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
@@ -89,9 +89,9 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
             alert.setImage(new Image(waitBlueImage[currentActiveFrameIndex % 17]));
             //isAlert = true;
             if (currentActiveFrameIndex >= 17) {
-                System.out.println("Before setting isAlert: " + isAlert);
+                //System.out.println("Before setting isAlert: " + isAlert);
                 //isAlert= true;
-                System.out.println("After setting isAlert: " + isAlert);
+                //System.out.println("After setting isAlert: " + isAlert);
                 currentActiveFrameIndex = 0;
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);

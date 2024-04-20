@@ -82,6 +82,7 @@ public class GameMap extends StackPane {
         gasStove.setTranslateX(-440);
         gasStove.setTranslateY(0);
         getChildren().add(gasStove);
+        gasStove.taskAlert();
 
 
 
@@ -195,12 +196,14 @@ public class GameMap extends StackPane {
     }
 
     public void showE(){
-        if(clothbucket.Canselect(player) || washingmachine.Canselect(player) || bin.Canselect(player) || sink.Canselect(player)){
+        if(clothbucket.Canselect(player) || washingmachine.Canselect(player) || bin.Canselect(player) || sink.Canselect(player) || wateronthefloor.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) || gasStove.Canselect(player)){
             buttonE.setVisible(true);
             if(isPressE){
                 if(washingmachine.Canselect(player)){washingmachine.Active();}
                 else if (bin.Canselect(player)) { bin.Active(); }
                 else if (sink.Canselect(player)) { sink.Active(); }
+                else if (wateronthefloor.Canselect(player)) { wateronthefloor.Active(); }
+                else if (gasStove.Canselect(player)) { gasStove.Active(); }
             }
         }else {
             buttonE.setVisible(false);

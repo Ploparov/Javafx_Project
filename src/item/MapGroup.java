@@ -38,7 +38,7 @@ public class MapGroup extends Group {
         if(!HaveOwner){
             Occupy();
             HaveOwner = true;
-            System.out.println("ooc");
+            //System.out.println("ooc");
         }
 
     }

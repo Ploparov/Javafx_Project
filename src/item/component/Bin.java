@@ -70,7 +70,7 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
         // Define the Timeline with a KeyFrame that starts the AnimationTimer every 2 seconds
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()), event -> {
             timer.start();
-            System.out.println("MARK");
+            //System.out.println("MARK");
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();
