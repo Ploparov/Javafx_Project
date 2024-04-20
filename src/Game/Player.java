@@ -21,6 +21,10 @@ public class Player extends ImageView {
 
     private Text scoreText;
 
+    private int hearts = 3;
+
+    private static Player instance;
+
 
     public Player() {
         super("Cat/CatFront/runfrontpng1.png");
@@ -33,6 +37,19 @@ public class Player extends ImageView {
         scoreText.setFont(Font.font("Arial", FontWeight.BOLD, 80)); // Set font to Arial, bold, size 24
         StackPane.setAlignment(scoreText, Pos.TOP_LEFT); // Align the text to the top-left
         StackPane.setMargin(scoreText, new Insets(10));
+    }
+
+    public static Player getInstance() {
+        if (instance == null) {
+            instance = new Player();
+        }
+        return instance;
+    }
+
+    public void decreaseHearts() {
+        if (hearts > 0) {
+            hearts--;
+        }
     }
 
 
@@ -59,5 +76,13 @@ public class Player extends ImageView {
 
     public Text getScoreText() {
         return scoreText;
+    }
+
+    public void setHearts(int hearts) {
+        this.hearts = hearts;
+    }
+
+    public int getHearts() {
+        return hearts;
     }
 }

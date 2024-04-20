@@ -15,12 +15,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameMap extends StackPane {
     final int tileSize = 48; //16*16*3
     final int screenWidth = tileSize * 16;
     final int screenHeight = tileSize * 12;
 
-    Player player = new Player();
+    Player player = Player.getInstance();
 
     private long lastPressedTime = 0;
     private boolean movingUp = false;
@@ -38,6 +41,8 @@ public class GameMap extends StackPane {
     private rider rider;
     private GasStove gasStove;
     boolean isPressE = false;
+
+    private List<ImageView> hearts;
 
     double minX = -285.0; // Minimum x value
     double maxX = 280.0; // Maximum x value
@@ -99,13 +104,13 @@ public class GameMap extends StackPane {
         getChildren().add(clothbucket);
 
         //add score
-        getChildren().add(player.getScoreText());
+//        getChildren().add(player.getScoreText());
 
+        // Initialize the hearts list
+        hearts = new ArrayList<>();
 
-
-
-
-
+        // Add the initial number of hearts to the list
+        updateHearts();
 
         //System.out.println("testwalk");
         this.setWidth(screenWidth);
@@ -134,6 +139,37 @@ public class GameMap extends StackPane {
         getChildren().add(buttonE);
         buttonE.setVisible(false);
 
+    }
+
+    public void updateHearts() {
+        // Remove all heart images from the game map
+        getChildren().removeAll(hearts);
+
+        // Clear the hearts list
+        hearts.clear();
+
+        // Load the heart image
+        Image heartImage = new Image("Component/Heart/heart.png");
+
+        // Add the current number of hearts to the list
+        for (int i = 0; i < player.getHearts(); i++) {
+            // Create a new ImageView object for the heart
+            ImageView heart = new ImageView(heartImage);
+
+            // Set the size of the heart
+            heart.setFitWidth(60);
+            heart.setFitHeight(60);
+
+            // Position the heart in the top right corner
+            heart.setTranslateX(-700 + i * 60); // Adjust these values as needed
+            heart.setTranslateY(-350);
+
+            // Add the heart to the hearts list
+            hearts.add(heart);
+        }
+
+        // Add the hearts to the game map
+        getChildren().addAll(hearts);
     }
 
     public void setKeyHandlers() {
@@ -195,6 +231,12 @@ public class GameMap extends StackPane {
                 ifAnimationSideLeft(now);
                 ifAnimationIdle(now);
                 showE();
+
+                // Check if the player's hearts have decreased
+                if (Player.getInstance().getHearts() < hearts.size()) {
+                    // Update the hearts on the game map
+                    updateHearts();
+                }
 
             }
         };
