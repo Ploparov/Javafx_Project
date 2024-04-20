@@ -11,6 +11,8 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import pane.GameMap;
+import utils.TimerManager;
 
 public class Bin extends GroupObjectActivable implements taskAble,activeAble{
     private ImageView alert;
@@ -40,11 +42,11 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
 
     @Override
     public void taskAlert() {
-        currentWaitFrameIndex = 17;
+        currentWaitFrameIndex = 0;
         isAlert = true;
         this.instance.setImage(new Image("Component/bin/bin1.png"));
         alert.setVisible(false);
-        alert.setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
+        //alert.setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -52,17 +54,19 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
                 long elapsedTime = now - lastUpdateTime;
                 if (elapsedTime >= 500_000_000 * multiply) { // 100 milliseconds in nanoseconds
 
-                    alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
                     currentWaitFrameIndex++;
+                    alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
                     if (currentWaitFrameIndex >= 17) {
+                        Player.getInstance().decreaseHearts();
                         currentWaitFrameIndex = 0;
                         alert.setVisible(true);
                         instance.setImage(new Image("Component/bin/bin2.png"));
-                        //stop(); // Stop the AnimationTimer
+                        stop(); // Stop the AnimationTimer
                     }
                     else if(!isAlert){
-                        currentWaitFrameIndex = 17;
+                        currentWaitFrameIndex = 0;
                         isAlert = true;
+                        stop();
                     }
                     lastUpdateTime = now; // Reset the last update time for timing
                 }
@@ -70,11 +74,16 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
         };
         // Define the Timeline with a KeyFrame that starts the AnimationTimer every 2 seconds
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()), event -> {
-            timer.start();
-            System.out.println("MARK");
+                timer.start();
+                System.out.println("MARK");
+                alert.setVisible(true);
+                instance.setImage(new Image("Component/bin/bin2.png"));
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();
+
+        TimerManager.getInstance().addTimer(timer);
+        TimerManager.getInstance().addTimeline(timeline);
 
     }
 

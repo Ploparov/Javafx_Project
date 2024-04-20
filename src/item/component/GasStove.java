@@ -1,5 +1,6 @@
 package item.component;
 
+import Game.Player;
 import Interface.activeAble;
 import Interface.taskAble;
 import item.GroupObjectActivable;
@@ -9,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import utils.TimerManager;
 
 
 public class GasStove extends GroupObjectActivable implements taskAble, activeAble {
@@ -59,6 +61,9 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();
+
+        TimerManager.getInstance().addTimer(timer);
+        TimerManager.getInstance().addTimeline(timeline);
     }
 
     public void AlertAnimation(long now){
@@ -70,6 +75,7 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
             alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
             currentWaitFrameIndex++;
             if (currentWaitFrameIndex >= 17) {
+                Player.getInstance().decreaseHearts();
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);
 

@@ -1,5 +1,6 @@
 package item.component;
 
+import Game.Player;
 import Interface.activeAble;
 import Interface.taskAble;
 import item.GroupObjectActivable;
@@ -9,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import utils.TimerManager;
 
 public class rider extends GroupObjectActivable implements taskAble, activeAble {
 
@@ -41,7 +43,7 @@ public class rider extends GroupObjectActivable implements taskAble, activeAble 
 
     @Override
     public void taskAlert() {
-        currentWaitFrameIndex = 17;
+        currentWaitFrameIndex = 0;
         isAlert = true;
         alert.setVisible(false);
         this.setVisible(false);
@@ -56,13 +58,14 @@ public class rider extends GroupObjectActivable implements taskAble, activeAble 
                     alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
                     currentWaitFrameIndex++;
                     if (currentWaitFrameIndex >= 17) {
+                        Player.getInstance().decreaseHearts();
                         currentWaitFrameIndex = 0;
                         alert.setVisible(true);
 
                         //stop(); // Stop the AnimationTimer
                     }
                     else if(!isAlert){
-                        currentWaitFrameIndex = 17;
+                        currentWaitFrameIndex = 0;
                         isAlert = true;
                     }
                     lastUpdateTime = now; // Reset the last update time for timing
@@ -73,9 +76,14 @@ public class rider extends GroupObjectActivable implements taskAble, activeAble 
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()), event -> {
             this.setVisible(true);
             timer.start();
+            alert.setVisible(true);
+            instance.setImage(new Image("Component/Rider/foodcat.png"));
             //System.out.println("MARK");
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();
+
+        TimerManager.getInstance().addTimer(timer);
+        TimerManager.getInstance().addTimeline(timeline);
     }
 }

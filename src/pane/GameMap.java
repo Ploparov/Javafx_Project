@@ -14,7 +14,10 @@ import Game.Player;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import utils.Goto;
+import utils.TimerManager;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +47,8 @@ public class GameMap extends StackPane {
 
     private List<ImageView> hearts;
 
+    private List<AnimationTimer> timers = new ArrayList<>();
+
     double minX = -285.0; // Minimum x value
     double maxX = 280.0; // Maximum x value
     double minY = -80.0; // Minimum y value
@@ -53,6 +58,8 @@ public class GameMap extends StackPane {
     public GameMap() {
         HouseFloor();
         WallBack();
+
+        Player.getInstance().setHearts(3);
 
 //        place("Component/WashingMachine/WashingMachine.png",150,150,0,-150);
 //        place("Component/WashingMachine/ClothBucket.png",150,150,150,-145);
@@ -237,10 +244,22 @@ public class GameMap extends StackPane {
                     // Update the hearts on the game map
                     updateHearts();
                 }
+                if(Player.getInstance().getHearts()==0){
+                    TimerManager.getInstance().stopAll();
+                    Goto.gameOverPage();
+                }
 
             }
         };
         timer.start();
+
+        TimerManager.getInstance().addTimer(timer);
+    }
+
+    public void stopAllTimers() {
+        for (AnimationTimer timer : timers) {
+            timer.stop();
+        }
     }
 
     public void showE(){
@@ -424,4 +443,6 @@ public class GameMap extends StackPane {
         getChildren().add(obj);
 
     }
+
+
 }

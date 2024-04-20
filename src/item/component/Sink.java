@@ -1,5 +1,6 @@
 package item.component;
 
+import Game.Player;
 import Interface.activeAble;
 import Interface.taskAble;
 import item.GroupObjectActivable;
@@ -9,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import utils.TimerManager;
 
 public class Sink extends GroupObjectActivable implements taskAble, activeAble {
     private ImageView alert;
@@ -58,6 +60,9 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();
+
+        TimerManager.getInstance().addTimer(timer);
+        TimerManager.getInstance().addTimeline(timeline);
     }
 
     public void AlertAnimation(long now){
@@ -70,6 +75,7 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
             alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
             currentWaitFrameIndex++;
             if (currentWaitFrameIndex >= 17) {
+                Player.getInstance().decreaseHearts();
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);
 
@@ -92,6 +98,7 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
                 //System.out.println("Before setting isAlert: " + isAlert);
                 //isAlert= true;
                 //System.out.println("After setting isAlert: " + isAlert);
+                //Player.getInstance().decreaseHearts();
                 currentActiveFrameIndex = 0;
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);
