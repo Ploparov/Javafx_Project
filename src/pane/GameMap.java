@@ -72,6 +72,18 @@ public class GameMap extends StackPane {
     public GameMap() {
         HouseFloor();
         WallBack();
+
+        ImageView window = new ImageView("Component/Wall/Window.png");
+        window.setFitWidth(280);
+        window.setFitHeight(140);
+        window.setTranslateY(-270);
+        getChildren().add(window);
+        ImageView curtain = new ImageView("Component/Wall/curtain.png");
+        curtain.setFitWidth(280);
+        curtain.setFitHeight(140);
+        curtain.setTranslateY(-270);
+        getChildren().add(curtain);
+
         startGameTimer();
 
         Player.getInstance().setHearts(3);
@@ -82,6 +94,7 @@ public class GameMap extends StackPane {
         washingmachine.setScaleX(0.2);
         washingmachine.setScaleY(0.2);
         washingmachine.setTranslateY(-150);
+        washingmachine.setTranslateX(300);
         getChildren().add(washingmachine);
 
         bin = new Bin();
@@ -177,6 +190,7 @@ public class GameMap extends StackPane {
         getChildren().add(buttonE);
         buttonE.setVisible(false);
 
+        shadows();
     }
 
     public void checkPosition(){
@@ -507,6 +521,18 @@ public class GameMap extends StackPane {
         place("Component/Floor/GrassFloor/GrassFloor.png",200,200,800,350);
     }
 
+    public void shadows(){
+        place("Component/Shadow/Shadow01.png",345,211,-310,-231,0.4);
+        place("Component/Shadow/Shadow01.png",345,211,310,-231,0.4);
+        place("Component/Shadow/Shadow02.png",60,80,-107,-165,0.4);
+        place("Component/Shadow/Shadow05.png",60,80,107,-165,0.4);
+        place("Component/Shadow/Shadow02.png",210,280,-240,14.2,0.3);
+        place("Component/Shadow/Shadow01.png",136,280,-413.5,14.2,0.3);
+        place("Component/Shadow/Shadow05.png",210,280,243,14.2,0.3);
+        place("Component/Shadow/Shadow01.png",136,280,415,14.2,0.3);
+        place("Component/Shadow/Shadow01.png",966,130,2,220,0.2);
+        place("Component/Shadow/Shadow04.png",300,800,670,200,0.2);
+    }
 
     public void place(String s,double w,double h,double x,double y){
 //        ImageView obj = new ImageView(s);
@@ -520,5 +546,14 @@ public class GameMap extends StackPane {
 
     }
 
+    public void place(String s,double w,double h,double x,double y,double o){
+        Object obj = new Object(s);
+        obj.setFitWidth(w);
+        obj.setFitHeight(h);
+        obj.setTranslateX(x);
+        obj.setTranslateY(y);
+        obj.setOpacity(o);
+        getChildren().add(obj);
 
+    }
 }
