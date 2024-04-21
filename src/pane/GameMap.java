@@ -4,8 +4,11 @@ import item.GroupObjectActivable;
 import item.Object;
 import item.component.*;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -14,6 +17,7 @@ import Game.Player;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import utils.Goto;
 import utils.TimerManager;
 
@@ -45,19 +49,30 @@ public class GameMap extends StackPane {
     private GasStove gasStove;
     boolean isPressE = false;
 
+    private int scoreTime = 0;
+
+    private Timeline gameTimer;
+
     private List<ImageView> hearts;
 
+    private Label xy = new Label();
+
     private List<AnimationTimer> timers = new ArrayList<>();
+
+    private Text timeText = new Text();
 
     double minX = -285.0; // Minimum x value
     double maxX = 280.0; // Maximum x value
     double minY = -80.0; // Minimum y value
     double maxY = 140.0; // Maximum y value
 
+    private static GameMap instance;
+
 
     public GameMap() {
         HouseFloor();
         WallBack();
+        startGameTimer();
 
         Player.getInstance().setHearts(3);
 
@@ -110,8 +125,24 @@ public class GameMap extends StackPane {
         clothbucket.setScaleY(0.2);
         getChildren().add(clothbucket);
 
-        //add score
-//        getChildren().add(player.getScoreText());
+        //for position check
+        xy.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        xy.setStyle("-fx-text-fill: black; -fx-stroke: black; -fx-stroke-width: 1px;");
+        xy.setText("X : "+player.getTranslateX()+"\nY : "+player.getTranslateY());
+        xy.setTranslateY(player.getTranslateY());
+        xy.setTranslateX(player.getTranslateX());
+//        System.out.println("X : "+player.getTranslateX());
+//        System.out.println("Y : "+player.getTranslateY());
+        getChildren().add(xy);
+
+        //display time
+        getChildren().add(timeText);
+        timeText.setTranslateX(630);
+        timeText.setTranslateY(-350);
+        timeText.setScaleX(2);
+        timeText.setScaleY(2);
+        timeText.setText("Score: " + 0);
+        timeText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
         // Initialize the hearts list
         hearts = new ArrayList<>();
@@ -146,6 +177,19 @@ public class GameMap extends StackPane {
         getChildren().add(buttonE);
         buttonE.setVisible(false);
 
+    }
+
+    public void checkPosition(){
+        xy.setText("X : "+player.getTranslateX()+"\nY : "+player.getTranslateY());
+        xy.setTranslateY(player.getTranslateY() - 130);
+        xy.setTranslateX(player.getTranslateX());
+    }
+
+    public static GameMap getInstance() {
+        if (instance == null) {
+            instance = new GameMap();
+        }
+        return instance;
     }
 
     public void updateHearts() {
@@ -238,6 +282,7 @@ public class GameMap extends StackPane {
                 ifAnimationSideLeft(now);
                 ifAnimationIdle(now);
                 showE();
+                checkPosition();
 
                 // Check if the player's hearts have decreased
                 if (Player.getInstance().getHearts() < hearts.size()) {
@@ -246,6 +291,8 @@ public class GameMap extends StackPane {
                 }
                 if(Player.getInstance().getHearts()==0){
                     TimerManager.getInstance().stopAll();
+                    System.out.println("Game ended. Score: " + scoreTime);
+                    GameOver.getGameOver().updateScore(scoreTime);
                     Goto.gameOverPage();
                 }
 
@@ -256,11 +303,40 @@ public class GameMap extends StackPane {
         TimerManager.getInstance().addTimer(timer);
     }
 
+    private void startGameTimer() {
+        gameTimer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            scoreTime+=10;
+            timeText.setText("Score: " + scoreTime); // Update the score display
+        }));
+        gameTimer.setCycleCount(Timeline.INDEFINITE);
+        gameTimer.play();
+
+
+        // Add the Timeline to your TimerManager to ensure it gets stopped when the game ends
+        TimerManager.getInstance().addTimeline(gameTimer);
+    }
+
+    public int getScoreTime() {
+        return scoreTime;
+    }
+
+    public void resetScore() {
+        scoreTime = 0;
+    }
+
+    public void stopGameTimer() {
+        if (gameTimer != null) {
+            gameTimer.stop();
+        }
+    }
+
     public void stopAllTimers() {
         for (AnimationTimer timer : timers) {
             timer.stop();
         }
     }
+
+
 
     public void showE(){
         if(clothbucket.Canselect(player) || washingmachine.Canselect(player) || bin.Canselect(player) || sink.Canselect(player) || wateronthefloor.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) ){
@@ -348,20 +424,20 @@ public class GameMap extends StackPane {
     }
 
     public void movePlayer() {
-        if (movingUp) {
+        if (movingUp && (((player.getTranslateY() > -140 && player.getTranslateX() < 360) || ((player.getTranslateY()>-30) && (player.getTranslateX()>360 && player.getTranslateX()<560))) || (player.getTranslateX()>560)
+                )){
             player.setTranslateY(player.getTranslateY() - 5);
         }
-        if (movingDown) {
+        if (movingDown && (player.getTranslateY() < 365)) {
             player.setTranslateY(player.getTranslateY() + 5);
         }
-        if (movingLeft) {
+        if (movingLeft && (player.getTranslateX()>-360) && (player.getTranslateX()!=560 || (player.getTranslateY()>-40 && player.getTranslateY()<100))){
             player.setTranslateX(player.getTranslateX() - 5);
         }
-        if (movingRight) {
+        if (movingRight && ((player.getTranslateX()<325) || (!(player.getTranslateY()>=-140 && player.getTranslateY()<=-40)) && ((player.getTranslateX()!=450)||(player.getTranslateY()>-40 && player.getTranslateY()<100)))) {
             player.setTranslateX(player.getTranslateX() + 5);
         }
-        System.out.println("X : "+player.getTranslateX());
-        System.out.println("Y : "+player.getTranslateY());
+
     }
 
     public void WallBack(){

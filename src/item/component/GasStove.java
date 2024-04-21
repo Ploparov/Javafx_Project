@@ -53,7 +53,7 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
                     ActiveAnimation();}
             }
         };
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()*10), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5 + Math.random()*10), event -> {
             isAlert= true;
             //System.out.println("START");
             //System.out.println(isAlert);
@@ -78,6 +78,7 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
                 Player.getInstance().decreaseHearts();
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);
+
 
             }
             lastUpdateTime = now; // Reset the last update time for timing

@@ -12,21 +12,32 @@ import utils.Goto;
 public class GameOver extends StackPane {
     private static GameOver instance;
 
+    private Label scoreLabel = new Label();
+
+    private VBox vbox = new VBox(20);
+
     public GameOver(){
 
         Label gameOverLabel = new Label("GAME OVER");
         gameOverLabel.setFont(Font.font("Arial", FontWeight.BOLD, 50)); // Set font to Arial, bold, size 50
         gameOverLabel.setAlignment(Pos.CENTER); // Center align the label
 
+        scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        scoreLabel.setText("Score: " + GameMap.getInstance().getScoreTime());
+        System.out.println("Score: " + GameMap.getInstance().getScoreTime());
+
         Button start = new Button("Back to Main Menu");
         start.setOnMouseClicked(mouseEvent -> {
-            Goto.MainMenuPage();});
+            Goto.MainMenuPage();
+            GameMap.getInstance().resetScore();
+        });
 
-        VBox vbox = new VBox(20); // Create a VBox with a spacing of 20
-        vbox.getChildren().addAll(gameOverLabel, start); // Add the label and button to the VBox
+
+        vbox.getChildren().addAll(gameOverLabel,scoreLabel, start); // Add the label and button to the VBox
         vbox.setAlignment(Pos.CENTER); // Center align the VBox
 
-        getChildren().add(vbox); // Add the VBox to the pane
+         // Add the VBox to the pane
+        getChildren().add(vbox);
     }
 
     public static GameOver getGameOver(){
@@ -34,5 +45,13 @@ public class GameOver extends StackPane {
             instance = new GameOver();
         }
         return instance;
+    }
+
+    public void updateScore(int score) {
+        System.out.println("Updating score: " + score);
+        // Update scoreLabel
+        scoreLabel.setText("Score: " + score);
+
+        // Add scoreLabel back to vbox
     }
 }

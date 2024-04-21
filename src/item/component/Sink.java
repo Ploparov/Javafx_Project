@@ -52,7 +52,7 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
                 ActiveAnimation();}
             }
         };
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()*10), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5 + Math.random()*10), event -> {
             isAlert= true;
             //System.out.println("START");
             //System.out.println(isAlert);

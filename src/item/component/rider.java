@@ -45,7 +45,7 @@ public class rider extends GroupObjectActivable implements taskAble, activeAble 
     public void taskAlert() {
         currentWaitFrameIndex = 0;
         isAlert = true;
-        alert.setVisible(false);
+        //alert.setVisible(false);
         this.setVisible(false);
         alert.setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
         AnimationTimer timer = new AnimationTimer() {
@@ -61,19 +61,21 @@ public class rider extends GroupObjectActivable implements taskAble, activeAble 
                         Player.getInstance().decreaseHearts();
                         currentWaitFrameIndex = 0;
                         alert.setVisible(true);
+                        stop();
 
                         //stop(); // Stop the AnimationTimer
                     }
                     else if(!isAlert){
                         currentWaitFrameIndex = 0;
                         isAlert = true;
+                        stop();
                     }
                     lastUpdateTime = now; // Reset the last update time for timing
                 }
             }
         };
         // Define the Timeline with a KeyFrame that starts the AnimationTimer every 2 seconds
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(6 + Math.random()), event -> {
             this.setVisible(true);
             timer.start();
             alert.setVisible(true);

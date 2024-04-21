@@ -1,5 +1,6 @@
 package item.component;
 
+import Game.Player;
 import Interface.activeAble;
 import item.GroupObjectActivable;
 import javafx.animation.AnimationTimer;

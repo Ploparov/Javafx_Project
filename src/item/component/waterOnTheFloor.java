@@ -60,19 +60,21 @@ public class waterOnTheFloor extends GroupObjectActivable implements taskAble, a
                         Player.getInstance().decreaseHearts();
                         currentWaitFrameIndex = 0;
                         alert.setVisible(true);
+                        stop();
 
                         //stop(); // Stop the AnimationTimer
                     }
                     else if(!isAlert){
                         currentWaitFrameIndex = 0;
                         isAlert = true;
+                        stop();
                     }
                     lastUpdateTime = now; // Reset the last update time for timing
                 }
             }
         };
         // Define the Timeline with a KeyFrame that starts the AnimationTimer every 2 seconds
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1 + Math.random()), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3 + Math.random()), event -> {
             this.setVisible(true);
             timer.start();
             alert.setVisible(true);

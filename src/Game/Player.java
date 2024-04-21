@@ -23,6 +23,8 @@ public class Player extends ImageView {
 
     private int hearts = 3;
 
+    private int max_hearts = 3;
+
     private static Player instance;
 
 
@@ -49,6 +51,12 @@ public class Player extends ImageView {
     public void decreaseHearts() {
         if (hearts > 0) {
             hearts--;
+        }
+    }
+
+    public void increaseHearts() {
+        if (hearts < max_hearts) {
+            hearts++;
         }
     }
 
