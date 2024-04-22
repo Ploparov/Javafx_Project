@@ -70,6 +70,8 @@ public class GameMap extends StackPane {
 
 
     public GameMap() {
+        player.setTranslateX(0);
+        player.setTranslateY(0);
         HouseFloor();
         WallBack();
 
