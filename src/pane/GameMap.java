@@ -439,17 +439,17 @@ public class GameMap extends StackPane {
     }
 
     public void movePlayer() {
-        if (movingUp && (((player.getTranslateY() > -140 && player.getTranslateX() < 360) || ((player.getTranslateY()>-30) && (player.getTranslateX()>360 && player.getTranslateX()<560))) || (player.getTranslateX()>560)
+        if (movingUp && (((player.getTranslateY() >= -140 && player.getTranslateX() <= 360) || ((player.getTranslateY()>=-30) && (player.getTranslateX()>=360 && player.getTranslateX()<=560))) || (player.getTranslateX()>=560)
                 )){
             player.setTranslateY(player.getTranslateY() - 5);
         }
-        if (movingDown && (player.getTranslateY() < 365)) {
+        if (movingDown && ((player.getTranslateY() < 365) && !(player.getTranslateX()>450 && player.getTranslateX()<560) || (player.getTranslateY()>-40 && player.getTranslateY()<25))) {
             player.setTranslateY(player.getTranslateY() + 5);
         }
-        if (movingLeft && (player.getTranslateX()>-360) && (player.getTranslateX()!=560 || (player.getTranslateY()>-40 && player.getTranslateY()<100))){
+        if (movingLeft && (player.getTranslateX()>-360) && (player.getTranslateX()!=560 || (player.getTranslateY()>-40 && player.getTranslateY()<25))){
             player.setTranslateX(player.getTranslateX() - 5);
         }
-        if (movingRight && ((player.getTranslateX()<325) || (!(player.getTranslateY()>=-140 && player.getTranslateY()<=-40)) && ((player.getTranslateX()!=450)||(player.getTranslateY()>-40 && player.getTranslateY()<100)))) {
+        if (movingRight && ((player.getTranslateX()<325) || (!(player.getTranslateY()>=-145 && player.getTranslateY()<-40)) && ((player.getTranslateX()!=450)||(player.getTranslateY()>-40 && player.getTranslateY()<25)))) {
             player.setTranslateX(player.getTranslateX() + 5);
         }
 

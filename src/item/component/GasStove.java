@@ -57,6 +57,7 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
             isAlert= true;
             //System.out.println("START");
             //System.out.println(isAlert);
+            //instance.setImage(new Image("Component/GasStove/GasStove1.png"));
             timer.start();
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
@@ -76,8 +77,10 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
             currentWaitFrameIndex++;
             if (currentWaitFrameIndex >= 17) {
                 Player.getInstance().decreaseHearts();
+                instance.setImage(new Image("Component/GasStove/GasStove1.png"));
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);
+
 
 
             }
@@ -87,6 +90,9 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
     }
 
     public void ActiveAnimation(){
+        if(currentWaitFrameIndex==0){
+            instance.setImage(new Image("Component/GasStove/GasStove1.png"));
+        }
 
         if(holdAction >= 20){
             currentActiveFrameIndex++;
@@ -100,10 +106,10 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
             //System.out.println("Before setting isAlert: " + isAlert);
             //isAlert= true;
             //System.out.println("After setting isAlert: " + isAlert);
+            instance.setImage(new Image("Component/GasStove/GasStove1.png"));
             currentActiveFrameIndex = 0;
             currentWaitFrameIndex = 0;
             alert.setVisible(false);
-            instance.setImage(new Image("Component/GasStove/GasStove1.png"));
 //                stop(); // Stop the AnimationTimer
         }
 
