@@ -16,9 +16,9 @@ public class Goto {
         rootPane.getChildren().add(new MainMenu());
     }
 
-    public static void gameOverPage(){
+    public static void gameOverPage(int score){
         clear();
-        rootPane.getChildren().add(new GameOver());
+        rootPane.getChildren().add(new GameOver(score));
     }
 
     public static void mapPage(){

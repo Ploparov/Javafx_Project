@@ -16,7 +16,7 @@ public class GameOver extends StackPane {
 
     private VBox vbox = new VBox(20);
 
-    public GameOver(){
+    public GameOver(int score){
 
         Label gameOverLabel = new Label("GAME OVER");
         gameOverLabel.setFont(Font.font("Arial", FontWeight.BOLD, 50)); // Set font to Arial, bold, size 50
@@ -35,6 +35,7 @@ public class GameOver extends StackPane {
 
         vbox.getChildren().addAll(gameOverLabel,scoreLabel, start); // Add the label and button to the VBox
         vbox.setAlignment(Pos.CENTER); // Center align the VBox
+        scoreLabel.setText("Score: " + score);
 
          // Add the VBox to the pane
         getChildren().add(vbox);
@@ -42,7 +43,7 @@ public class GameOver extends StackPane {
 
     public static GameOver getGameOver(){
         if(instance == null){
-            instance = new GameOver();
+            instance = new GameOver(0);
         }
         return instance;
     }

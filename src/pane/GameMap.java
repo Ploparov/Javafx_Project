@@ -308,8 +308,7 @@ public class GameMap extends StackPane {
                 if(Player.getInstance().getHearts()==0){
                     TimerManager.getInstance().stopAll();
                     System.out.println("Game ended. Score: " + scoreTime);
-                    GameOver.getGameOver().updateScore(scoreTime);
-                    Goto.gameOverPage();
+                    Goto.gameOverPage(scoreTime);
                 }
 
             }
