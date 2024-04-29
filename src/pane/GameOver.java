@@ -11,11 +11,8 @@ import utils.Goto;
 
 public class GameOver extends StackPane {
     private static GameOver instance;
-
     private Label scoreLabel = new Label();
-
     private VBox vbox = new VBox(20);
-
     public GameOver(int score){
 
         Label gameOverLabel = new Label("GAME OVER");
@@ -31,8 +28,6 @@ public class GameOver extends StackPane {
             Goto.MainMenuPage();
             GameMap.getInstance().resetScore();
         });
-
-
         vbox.getChildren().addAll(gameOverLabel,scoreLabel, start); // Add the label and button to the VBox
         vbox.setAlignment(Pos.CENTER); // Center align the VBox
         scoreLabel.setText("Score: " + score);
@@ -42,17 +37,13 @@ public class GameOver extends StackPane {
     }
 
     public static GameOver getGameOver(){
-        if(instance == null){
-            instance = new GameOver(0);
-        }
+        if(instance == null){instance = new GameOver(0);}
         return instance;
     }
-
     public void updateScore(int score) {
         System.out.println("Updating score: " + score);
         // Update scoreLabel
         scoreLabel.setText("Score: " + score);
-
         // Add scoreLabel back to vbox
     }
 }

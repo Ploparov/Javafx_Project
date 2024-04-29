@@ -25,7 +25,6 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
     private final String[] waitBlueImage = {"UI/Wait/WaitBlue/WaitBlue1.png", "UI/Wait/WaitBlue/WaitBlue2.png", "UI/Wait/WaitBlue/WaitBlue3.png", "UI/Wait/WaitBlue/WaitBlue4.png", "UI/Wait/WaitBlue/WaitBlue5.png", "UI/Wait/WaitBlue/WaitBlue6.png", "UI/Wait/WaitBlue/WaitBlue7.png", "UI/Wait/WaitBlue/WaitBlue8.png", "UI/Wait/WaitBlue/WaitBlue9.png", "UI/Wait/WaitBlue/WaitBlue10.png", "UI/Wait/WaitBlue/WaitBlue11.png", "UI/Wait/WaitBlue/WaitBlue12.png", "UI/Wait/WaitBlue/WaitBlue13.png", "UI/Wait/WaitBlue/WaitBlue14.png", "UI/Wait/WaitBlue/WaitBlue15.png", "UI/Wait/WaitBlue/WaitBlue16.png", "UI/Wait/WaitBlue/WaitBlue17.png"};
     public GasStove() {
         super("Component/GasStove/GasStove1.png");
-
         alert = new ImageView("UI/Wait/WaitRed/WaitRed1.png");
         alert.setFitWidth(200);
         alert.setFitHeight(200);
@@ -33,7 +32,6 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
         alert.setTranslateY(-100);
         getChildren().add(alert);
         alert.setVisible(false);
-
         lastUpdateTime = System.nanoTime();
     }
 
@@ -46,18 +44,12 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(isAlert){
-                    //alert.setVisible(true);
-                    AlertAnimation(now);}
-                else {
-                    ActiveAnimation();}
+                if(isAlert){AlertAnimation(now);}
+                else {ActiveAnimation();}
             }
         };
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5 + Math.random()*10), event -> {
             isAlert= true;
-            //System.out.println("START");
-            //System.out.println(isAlert);
-            //instance.setImage(new Image("Component/GasStove/GasStove1.png"));
             timer.start();
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
@@ -80,40 +72,25 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
                 instance.setImage(new Image("Component/GasStove/GasStove1.png"));
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);
-
-
-
             }
             lastUpdateTime = now; // Reset the last update time for timing
         }
-
     }
 
     public void ActiveAnimation(){
-        if(currentWaitFrameIndex==0){
-            instance.setImage(new Image("Component/GasStove/GasStove1.png"));
-        }
-
+        if(currentWaitFrameIndex==0){instance.setImage(new Image("Component/GasStove/GasStove1.png"));}
         if(holdAction >= 20){
             currentActiveFrameIndex++;
             instance.setImage(new Image("Component/GasStove/GasStove2.png"));
             holdAction = 0;
-            //isAlert = false;
         }
         alert.setImage(new Image(waitBlueImage[currentActiveFrameIndex % 17]));
-        //isAlert = true;
         if (currentActiveFrameIndex >= 17) {
-            //System.out.println("Before setting isAlert: " + isAlert);
-            //isAlert= true;
-            //System.out.println("After setting isAlert: " + isAlert);
             instance.setImage(new Image("Component/GasStove/GasStove1.png"));
             currentActiveFrameIndex = 0;
             currentWaitFrameIndex = 0;
             alert.setVisible(false);
-//                stop(); // Stop the AnimationTimer
         }
-
-
     }
 
     @Override

@@ -12,22 +12,15 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import utils.TimerManager;
 
-import java.awt.*;
-
-public class waterOnTheFloor extends GroupObjectActivable implements taskAble, activeAble {
+public class WaterOnTheFloor extends GroupObjectActivable implements taskAble, activeAble {
     private final ImageView alert;
     private boolean isAlert = false;
     private long lastUpdateTime;
-    private int holdAction = 0;
     private int currentWaitFrameIndex = 0;
-    private int currentActiveFrameIndex = 0;
     private final String[] waitRedImage = {"UI/Wait/WaitRed/WaitRed1.png", "UI/Wait/WaitRed/WaitRed2.png", "UI/Wait/WaitRed/WaitRed3.png", "UI/Wait/WaitRed/WaitRed4.png", "UI/Wait/WaitRed/WaitRed5.png", "UI/Wait/WaitRed/WaitRed6.png", "UI/Wait/WaitRed/WaitRed7.png", "UI/Wait/WaitRed/WaitRed8.png", "UI/Wait/WaitRed/WaitRed9.png", "UI/Wait/WaitRed/WaitRed10.png", "UI/Wait/WaitRed/WaitRed11.png", "UI/Wait/WaitRed/WaitRed12.png", "UI/Wait/WaitRed/WaitRed13.png", "UI/Wait/WaitRed/WaitRed14.png", "UI/Wait/WaitRed/WaitRed15.png", "UI/Wait/WaitRed/WaitRed16.png", "UI/Wait/WaitRed/WaitRed17.png"};
-    private final String[] waitBlueImage = {"UI/Wait/WaitBlue/WaitBlue1.png", "UI/Wait/WaitBlASue/WaitBlue2.png", "UI/Wait/WaitBlue/WaitBlue3.png", "UI/Wait/WaitBlue/WaitBlue4.png", "UI/Wait/WaitBlue/WaitBlue5.png", "UI/Wait/WaitBlue/WaitBlue6.png", "UI/Wait/WaitBlue/WaitBlue7.png", "UI/Wait/WaitBlue/WaitBlue8.png", "UI/Wait/WaitBlue/WaitBlue9.png", "UI/Wait/WaitBlue/WaitBlue10.png", "UI/Wait/WaitBlue/WaitBlue11.png", "UI/Wait/WaitBlue/WaitBlue12.png", "UI/Wait/WaitBlue/WaitBlue13.png", "UI/Wait/WaitBlue/WaitBlue14.png", "UI/Wait/WaitBlue/WaitBlue15.png", "UI/Wait/WaitBlue/WaitBlue16.png", "UI/Wait/WaitBlue/WaitBlue17.png"};
-
-    public waterOnTheFloor() {
+    public WaterOnTheFloor() {
         super("Component/WaterOnTheFloor/waterOnthefloor.png");
         this.setVisible(true);
-
         alert = new ImageView("UI/Wait/WaitRed/WaitRed1.png");
         alert.setFitWidth(200);
         alert.setFitHeight(200);
@@ -35,11 +28,8 @@ public class waterOnTheFloor extends GroupObjectActivable implements taskAble, a
         alert.setTranslateY(-100);
         getChildren().add(alert);
         alert.setVisible(false);
-
         lastUpdateTime = System.nanoTime();
     }
-
-
     @Override
     public void taskAlert() {
         currentWaitFrameIndex = 0;
@@ -50,10 +40,8 @@ public class waterOnTheFloor extends GroupObjectActivable implements taskAble, a
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-
                 long elapsedTime = now - lastUpdateTime;
                 if (elapsedTime >= 500_000_000) { // 100 milliseconds in nanoseconds
-
                     alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
                     currentWaitFrameIndex++;
                     if (currentWaitFrameIndex >= 17) {
@@ -61,8 +49,6 @@ public class waterOnTheFloor extends GroupObjectActivable implements taskAble, a
                         currentWaitFrameIndex = 0;
                         alert.setVisible(true);
                         stop();
-
-                        //stop(); // Stop the AnimationTimer
                     }
                     else if(!isAlert){
                         currentWaitFrameIndex = 0;
@@ -79,14 +65,12 @@ public class waterOnTheFloor extends GroupObjectActivable implements taskAble, a
             timer.start();
             alert.setVisible(true);
             instance.setImage(new Image("Component/WaterOnTheFloor/waterOnthefloor.png"));
-            //System.out.println("MARK");
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();
 
         TimerManager.getInstance().addTimer(timer);
         TimerManager.getInstance().addTimeline(timeline);
-
     }
 
     @Override

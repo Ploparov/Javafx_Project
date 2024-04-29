@@ -2,7 +2,6 @@ package pane;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import Game.Player;
@@ -14,19 +13,14 @@ public class TestWalk extends StackPane {
     final int tileSize = 48; //16*16*3
     final int screenWidth = tileSize * 16;
     final int screenHeight = tileSize * 12;
-
     Player player = new Player();
-
     private long lastPressedTime = 0;
     private boolean movingUp = false;
     private boolean movingDown = false;
     private boolean movingLeft = false;
     private boolean movingRight = false;
     int currentFrameIndex = 0;
-
-
     public TestWalk() {
-
         System.out.println("testwalk");
         this.setWidth(screenWidth);
         this.setHeight(screenHeight);
@@ -34,9 +28,7 @@ public class TestWalk extends StackPane {
         getChildren().add(player);
         setKeyHandlers();
         startAnimation();
-
     }
-
     public void setKeyHandlers() {
         this.setOnKeyPressed(event -> {
             long currentTime = System.nanoTime();
@@ -103,24 +95,19 @@ public class TestWalk extends StackPane {
                 System.out.println(player.CR_front[currentFrameIndex % 8]);
                 player.setImage(new Image(player.CR_front[currentFrameIndex % 8]));
                 currentFrameIndex++;
-
                 lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
             }
         }
     }
-
     public  void ifAnimationSideRight(long now){
         if ( movingRight ) {
             long elapsedTime = now - lastPressedTime;
             if (elapsedTime >= 20_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
-
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
                 System.out.println(currentFrameIndex);
                 System.out.println(player.CR_side_right[currentFrameIndex % 10]);
                 player.setImage(new Image(player.CR_side_right[currentFrameIndex % 10]));
                 currentFrameIndex++;
-
-
                 lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
             }
         }
@@ -130,14 +117,11 @@ public class TestWalk extends StackPane {
         if (movingLeft) {
             long elapsedTime = now - lastPressedTime;
             if (elapsedTime >= 20_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
-
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
                 System.out.println(currentFrameIndex);
                 System.out.println(player.CR_side_left[currentFrameIndex % 10]);
                 player.setImage(new Image(player.CR_side_left[currentFrameIndex % 10]));
                 currentFrameIndex++;
-
-
                 lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
             }
         }

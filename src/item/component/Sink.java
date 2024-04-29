@@ -24,7 +24,6 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
 
     public Sink() {
         super("Component/Sink/sink_withoutbowl.png");
-
         alert = new ImageView("UI/Wait/WaitRed/WaitRed1.png");
         alert.setFitWidth(200);
         alert.setFitHeight(200);
@@ -32,7 +31,6 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
         alert.setTranslateY(-100);
         getChildren().add(alert);
         alert.setVisible(false);
-
         lastUpdateTime = System.nanoTime();
     }
 
@@ -45,17 +43,12 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(isAlert){
-                    //alert.setVisible(true);
-                AlertAnimation(now);}
-                else {
-                ActiveAnimation();}
+                if(isAlert){AlertAnimation(now);}
+                else {ActiveAnimation();}
             }
         };
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5 + Math.random()*10), event -> {
             isAlert= true;
-            //System.out.println("START");
-            //System.out.println(isAlert);
             timer.start();
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
@@ -78,7 +71,6 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
                 Player.getInstance().decreaseHearts();
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);
-
             }
             lastUpdateTime = now; // Reset the last update time for timing
         }
@@ -86,27 +78,18 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
     }
 
     public void ActiveAnimation(){
-
             if(holdAction >= 20){
                 currentActiveFrameIndex++;
                 holdAction = 0;
-                //isAlert = false;
             }
             alert.setImage(new Image(waitBlueImage[currentActiveFrameIndex % 17]));
             //isAlert = true;
             if (currentActiveFrameIndex >= 17) {
-                //System.out.println("Before setting isAlert: " + isAlert);
-                //isAlert= true;
-                //System.out.println("After setting isAlert: " + isAlert);
-                //Player.getInstance().decreaseHearts();
                 currentActiveFrameIndex = 0;
                 currentWaitFrameIndex = 0;
                 alert.setVisible(false);
                 instance.setImage(new Image("Component/Sink/sink_withoutbowl.png"));
-//                stop(); // Stop the AnimationTimer
             }
-
-
     }
 
     @Override

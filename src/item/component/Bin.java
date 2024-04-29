@@ -4,14 +4,12 @@ import Game.Player;
 import item.GroupObjectActivable;
 import Interface.taskAble;
 import Interface.activeAble;
-import item.Object;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import pane.GameMap;
 import utils.TimerManager;
 
 public class Bin extends GroupObjectActivable implements taskAble,activeAble{
@@ -25,7 +23,6 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
 
     public Bin() {
         super("Component/bin/bin1.png");
-
         alert = new ImageView("UI/Wait/WaitRed/WaitRed1.png");
         alert.setFitWidth(250);
         alert.setFitHeight(250);
@@ -33,10 +30,6 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
         alert.setTranslateY(-100);
         getChildren().add(alert);
         alert.setVisible(false);
-
-
-
-
         lastUpdateTime = System.nanoTime();
     }
 
@@ -46,14 +39,11 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
         isAlert = true;
         this.instance.setImage(new Image("Component/bin/bin1.png"));
         alert.setVisible(false);
-        //alert.setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-
                 long elapsedTime = now - lastUpdateTime;
                 if (elapsedTime >= 500_000_000 * multiply) { // 100 milliseconds in nanoseconds
-
                     currentWaitFrameIndex++;
                     alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
                     if (currentWaitFrameIndex >= 17) {
@@ -81,12 +71,9 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();
-
         TimerManager.getInstance().addTimer(timer);
         TimerManager.getInstance().addTimeline(timeline);
-
     }
-
     @Override
     public void Active() {
         if(isAlert) {

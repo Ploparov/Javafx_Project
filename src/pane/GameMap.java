@@ -6,8 +6,6 @@ import item.component.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,7 +27,6 @@ public class GameMap extends StackPane {
     final int tileSize = 48; //16*16*3
     final int screenWidth = tileSize * 16;
     final int screenHeight = tileSize * 12;
-
     Player player = Player.getInstance();
 
     private long lastPressedTime = 0;
@@ -38,37 +35,26 @@ public class GameMap extends StackPane {
     private boolean movingLeft = false;
     private boolean movingRight = false;
     int currentFrameIndex = 0;
-    private GroupObjectActivable clothbucket;
-
+    private GroupObjectActivable clothBucket;
     private ImageView buttonE;
-    private washingMachine washingmachine;
+    private WashingMachine washingMachine;
     private Bin bin;
     private Sink sink;
-    private waterOnTheFloor wateronthefloor;
-    private rider rider;
+    private WaterOnTheFloor waterOnTheFloor;
+    private Rider rider;
     private GasStove gasStove;
     boolean isPressE = false;
-
     private int scoreTime = 0;
-
     private Timeline gameTimer;
-
     private List<ImageView> hearts;
-
     private Label xy = new Label();
-
     private List<AnimationTimer> timers = new ArrayList<>();
-
     private Text timeText = new Text();
-
     double minX = -285.0; // Minimum x value
     double maxX = 280.0; // Maximum x value
     double minY = -80.0; // Minimum y value
     double maxY = 140.0; // Maximum y value
-
     private static GameMap instance;
-
-
     public GameMap() {
         player.setTranslateX(0);
         player.setTranslateY(0);
@@ -90,14 +76,12 @@ public class GameMap extends StackPane {
 
         Player.getInstance().setHearts(3);
 
-//        place("Component/WashingMachine/WashingMachine.png",150,150,0,-150);
-//        place("Component/WashingMachine/ClothBucket.png",150,150,150,-145);
-        washingmachine = new washingMachine();
-        washingmachine.setScaleX(0.2);
-        washingmachine.setScaleY(0.2);
-        washingmachine.setTranslateY(-150);
-        washingmachine.setTranslateX(300);
-        getChildren().add(washingmachine);
+        washingMachine = new WashingMachine();
+        washingMachine.setScaleX(0.2);
+        washingMachine.setScaleY(0.2);
+        washingMachine.setTranslateY(-150);
+        washingMachine.setTranslateX(300);
+        getChildren().add(washingMachine);
 
         bin = new Bin();
         bin.setScaleX(0.2);
@@ -115,13 +99,13 @@ public class GameMap extends StackPane {
         getChildren().add(sink);
         sink.taskAlert();
 
-        wateronthefloor = new waterOnTheFloor();
-        wateronthefloor.setScaleX(0.2);
-        wateronthefloor.setScaleY(0.2);
-        wateronthefloor.setTranslateX(minX + (Math.random() * (maxX - minX)));
-        wateronthefloor.setTranslateY(minY + (Math.random() * (maxY - minY)));
-        getChildren().add(wateronthefloor);
-        wateronthefloor.taskAlert();
+        waterOnTheFloor = new WaterOnTheFloor();
+        waterOnTheFloor.setScaleX(0.2);
+        waterOnTheFloor.setScaleY(0.2);
+        waterOnTheFloor.setTranslateX(minX + (Math.random() * (maxX - minX)));
+        waterOnTheFloor.setTranslateY(minY + (Math.random() * (maxY - minY)));
+        getChildren().add(waterOnTheFloor);
+        waterOnTheFloor.taskAlert();
 
         gasStove = new GasStove();
         gasStove.setScaleX(0.3);
@@ -131,14 +115,12 @@ public class GameMap extends StackPane {
         getChildren().add(gasStove);
         gasStove.taskAlert();
 
-
-
-        clothbucket = new GroupObjectActivable("Component/WashingMachine/ClothBucket.png");
-        clothbucket.setTranslateX(150);
-        clothbucket.setTranslateY(-145);
-        clothbucket.setScaleX(0.2);
-        clothbucket.setScaleY(0.2);
-        getChildren().add(clothbucket);
+        clothBucket = new GroupObjectActivable("Component/WashingMachine/ClothBucket.png");
+        clothBucket.setTranslateX(150);
+        clothBucket.setTranslateY(-145);
+        clothBucket.setScaleX(0.2);
+        clothBucket.setScaleY(0.2);
+        getChildren().add(clothBucket);
 
         //for position check
         xy.setFont(Font.font("Arial", FontWeight.BOLD, 30));
@@ -146,8 +128,7 @@ public class GameMap extends StackPane {
         xy.setText("X : "+player.getTranslateX()+"\nY : "+player.getTranslateY());
         xy.setTranslateY(player.getTranslateY());
         xy.setTranslateX(player.getTranslateX());
-//        System.out.println("X : "+player.getTranslateX());
-//        System.out.println("Y : "+player.getTranslateY());
+
         getChildren().add(xy);
 
         //display time
@@ -176,7 +157,7 @@ public class GameMap extends StackPane {
 
         WallFront();
 
-        rider = new rider();
+        rider = new Rider();
         rider.setScaleX(0.4);
         rider.setScaleY(0.4);
         rider.setTranslateX(650);
@@ -354,18 +335,18 @@ public class GameMap extends StackPane {
 
 
     public void showE(){
-        if(clothbucket.Canselect(player) || washingmachine.Canselect(player) || bin.Canselect(player) || sink.Canselect(player) || wateronthefloor.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) ){
+        if(clothBucket.Canselect(player) || washingMachine.Canselect(player) || bin.Canselect(player) || sink.Canselect(player) || waterOnTheFloor.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) ){
             buttonE.setVisible(true);
             if(isPressE){
-                if(washingmachine.Canselect(player)){washingmachine.Active();}
+                if(washingMachine.Canselect(player)){washingMachine.Active();}
                 else if (bin.Canselect(player)) { bin.Active(); }
                 else if (sink.Canselect(player)) { sink.Active(); }
                 else if (gasStove.Canselect(player)) { gasStove.Active(); }
                 else if (rider.Canselect(player)) { rider.Active(); }
-                else if (wateronthefloor.Canselect(player)) {
-                    wateronthefloor.setTranslateX(minX + (Math.random() * (maxX - minX)));
-                    wateronthefloor.setTranslateY(minY + (Math.random() * (maxY - minY)));
-                    wateronthefloor.Active();
+                else if (waterOnTheFloor.Canselect(player)) {
+                    waterOnTheFloor.setTranslateX(minX + (Math.random() * (maxX - minX)));
+                    waterOnTheFloor.setTranslateY(minY + (Math.random() * (maxY - minY)));
+                    waterOnTheFloor.Active();
                 }
             }
         }else {
@@ -382,7 +363,6 @@ public class GameMap extends StackPane {
                 //System.out.println(player.CR_front[currentFrameIndex % 8]);
                 player.setImage(new Image(player.CR_front[currentFrameIndex % 8]));
                 currentFrameIndex++;
-
                 lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
             }
         }
@@ -392,31 +372,23 @@ public class GameMap extends StackPane {
         if ( movingRight ) {
             long elapsedTime = now - lastPressedTime;
             if (elapsedTime >= 20_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
-
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                //System.out.println(currentFrameIndex);
-                //System.out.println(player.CR_side_right[currentFrameIndex % 10]);
                 player.setImage(new Image(player.CR_side_right[currentFrameIndex % 10]));
                 currentFrameIndex++;
-
-
                 lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
             }
         }
     }
-
     public  void ifAnimationSideLeft(long now){
         if (movingLeft) {
             long elapsedTime = now - lastPressedTime;
-            if (elapsedTime >= 20_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
-
+            if (elapsedTime >= 20_000_000) {
+                // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
                 //System.out.println(currentFrameIndex);
                 //System.out.println(player.CR_side_left[currentFrameIndex % 10]);
                 player.setImage(new Image(player.CR_side_left[currentFrameIndex % 10]));
                 currentFrameIndex++;
-
-
                 lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
             }
         }
@@ -424,15 +396,11 @@ public class GameMap extends StackPane {
     public  void ifAnimationIdle(long now){
         if ( !(movingLeft || movingRight || movingUp || movingDown) ) {
             long elapsedTime = now - lastPressedTime;
-            if (elapsedTime >= 500_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
-
+            if (elapsedTime >= 500_000_000) {
+                // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                //System.out.println(currentFrameIndex);
-                //System.out.println(player.CIdle[currentFrameIndex % 2]);
                 player.setImage(new Image(player.CIdle[currentFrameIndex % 2]));
                 currentFrameIndex++;
-
-
                 lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
             }
         }
@@ -457,8 +425,6 @@ public class GameMap extends StackPane {
 
     public void WallBack(){
         place("Component/Wall/wall_noborder.png",1000,250,0,-250);
-//        place("Component/Wall/wall_side.png",200,150,-500,-300);
-//        place("Component/Wall/wall_side_border.png",200,200,-500,-200);
         place("Component/Wall/wall_side.png",200,250,500,-250);
         place("Component/Wall/wall_side_border.png",200,200,500,-100);
         place("Component/Wall/door.png",200,250,430,-75);
@@ -555,6 +521,5 @@ public class GameMap extends StackPane {
         obj.setTranslateY(y);
         obj.setOpacity(o);
         getChildren().add(obj);
-
     }
 }
