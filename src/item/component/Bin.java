@@ -10,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import pane.SoundMP3;
 import utils.TimerManager;
 
 public class Bin extends GroupObjectActivable implements taskAble,activeAble{
@@ -19,8 +20,6 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
     private int currentWaitFrameIndex = 0;
     private double multiply = 0.9;
     private final String[] waitRedImage = {"UI/Wait/WaitRed/WaitRed1.png", "UI/Wait/WaitRed/WaitRed2.png", "UI/Wait/WaitRed/WaitRed3.png", "UI/Wait/WaitRed/WaitRed4.png", "UI/Wait/WaitRed/WaitRed5.png", "UI/Wait/WaitRed/WaitRed6.png", "UI/Wait/WaitRed/WaitRed7.png", "UI/Wait/WaitRed/WaitRed8.png", "UI/Wait/WaitRed/WaitRed9.png", "UI/Wait/WaitRed/WaitRed10.png", "UI/Wait/WaitRed/WaitRed11.png", "UI/Wait/WaitRed/WaitRed12.png", "UI/Wait/WaitRed/WaitRed13.png", "UI/Wait/WaitRed/WaitRed14.png", "UI/Wait/WaitRed/WaitRed15.png", "UI/Wait/WaitRed/WaitRed16.png", "UI/Wait/WaitRed/WaitRed17.png"};
-
-
     public Bin() {
         super("Component/bin/bin1.png");
         alert = new ImageView("UI/Wait/WaitRed/WaitRed1.png");
@@ -32,7 +31,7 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
         alert.setVisible(false);
         lastUpdateTime = System.nanoTime();
     }
-
+    SoundMP3 sound = new SoundMP3();
     @Override
     public void taskAlert() {
         currentWaitFrameIndex = 0;
@@ -68,6 +67,7 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
                 System.out.println("MARK");
                 alert.setVisible(true);
                 instance.setImage(new Image("Component/bin/bin2.png"));
+                playEffect(6);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();
@@ -82,5 +82,12 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
             alert.setVisible(false);
             this.instance.setImage(new Image("Component/bin/bin1.png"));
         }
+    }
+    public void playEffect(int i) {
+        sound.setFile(i);
+        sound.play();
+    }
+    public void stopEffect(){
+        sound.stop();
     }
 }

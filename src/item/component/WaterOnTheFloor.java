@@ -10,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import pane.SoundW;
 import utils.TimerManager;
 
 public class WaterOnTheFloor extends GroupObjectActivable implements taskAble, activeAble {
@@ -18,6 +19,7 @@ public class WaterOnTheFloor extends GroupObjectActivable implements taskAble, a
     private long lastUpdateTime;
     private int currentWaitFrameIndex = 0;
     private final String[] waitRedImage = {"UI/Wait/WaitRed/WaitRed1.png", "UI/Wait/WaitRed/WaitRed2.png", "UI/Wait/WaitRed/WaitRed3.png", "UI/Wait/WaitRed/WaitRed4.png", "UI/Wait/WaitRed/WaitRed5.png", "UI/Wait/WaitRed/WaitRed6.png", "UI/Wait/WaitRed/WaitRed7.png", "UI/Wait/WaitRed/WaitRed8.png", "UI/Wait/WaitRed/WaitRed9.png", "UI/Wait/WaitRed/WaitRed10.png", "UI/Wait/WaitRed/WaitRed11.png", "UI/Wait/WaitRed/WaitRed12.png", "UI/Wait/WaitRed/WaitRed13.png", "UI/Wait/WaitRed/WaitRed14.png", "UI/Wait/WaitRed/WaitRed15.png", "UI/Wait/WaitRed/WaitRed16.png", "UI/Wait/WaitRed/WaitRed17.png"};
+    SoundW soundW = new SoundW();
     public WaterOnTheFloor() {
         super("Component/WaterOnTheFloor/waterOnthefloor.png");
         this.setVisible(true);
@@ -65,6 +67,7 @@ public class WaterOnTheFloor extends GroupObjectActivable implements taskAble, a
             timer.start();
             alert.setVisible(true);
             instance.setImage(new Image("Component/WaterOnTheFloor/waterOnthefloor.png"));
+            playEffect(4);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();
@@ -78,5 +81,12 @@ public class WaterOnTheFloor extends GroupObjectActivable implements taskAble, a
         isAlert = false;
         alert.setVisible(false);
         this.setVisible(false);
+    }
+    public void playEffect(int i) {
+        soundW.setFile(i);
+        soundW.play();
+    }
+    public void stopEffect(){
+        soundW.stop();
     }
 }

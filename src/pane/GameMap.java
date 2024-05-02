@@ -66,6 +66,7 @@ public class GameMap extends StackPane {
         window.setFitHeight(140);
         window.setTranslateY(-270);
         getChildren().add(window);
+
         ImageView curtain = new ImageView("Component/Wall/curtain.png");
         curtain.setFitWidth(280);
         curtain.setFitHeight(140);
@@ -164,6 +165,7 @@ public class GameMap extends StackPane {
         rider.setTranslateY(150);
         getChildren().add(rider);
         rider.taskAlert();
+
 
         buttonE = new ImageView("UI/ebutton/E_Button1.png");
         buttonE.setFitWidth(100);

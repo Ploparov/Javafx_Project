@@ -83,7 +83,7 @@ public class MainMenu extends StackPane {
         quitGame.setStyle("-fx-background-radius: 20;");
 
 //        String path = getClass().getResource("Grean.mp3").getPath();
-//        Button soundButton = new Button("Play Sound");
+//        Button soundButton = new Button("Play pane.Sound");
 //        Media sound = new Media(new File(path).toURI().toString()); // Replace with the actual path to your sound file
 //        MediaPlayer mediaPlayer = new MediaPlayer(sound);
 
