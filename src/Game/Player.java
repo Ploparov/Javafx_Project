@@ -23,7 +23,10 @@ public class Player extends ImageView {
         super("Cat/CatFront/runfrontpng1.png");
         setFitHeight(200);
         setFitWidth(100);
-        setDefaultValues();
+        setSpeed(4);
+        scoreText();
+    }
+    public void scoreText(){
         scoreText = new Text();
         scoreText.setText(Integer.toString(score));
         scoreText.setFont(Font.font("Arial", FontWeight.BOLD, 80)); // Set font to Arial, bold, size 24
@@ -36,9 +39,6 @@ public class Player extends ImageView {
     }
     public void decreaseHearts() {
         if (hearts > 0) {hearts--;}
-    }
-    public void setDefaultValues() {
-        setSpeed(4);
     }
     public void setSpeed(int speed) { this.speed = speed; }
     public void setHearts(int hearts) {

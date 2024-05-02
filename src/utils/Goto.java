@@ -15,11 +15,7 @@ public class Goto {
         clear();
         rootPane.getChildren().add(new GameOver(score));
     }
-    public static void mapPage(){
-        clear();
-        rootPane.getChildren().add(new Map());
-    }
-    public static void test(){
+    public static void gameMap(){
         clear();
         rootPane.getChildren().add(new GameMap());
     }

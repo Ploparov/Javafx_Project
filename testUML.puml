@@ -1,0 +1,281 @@
+@startuml
+class main {
++ {static} void main(String[])
++ void start(Stage)
+}
+class item.component.GasStove {
+- ImageView alert
+- boolean isAlert
+- long lastUpdateTime
+- int holdAction
+- int currentWaitFrameIndex
+- int currentActiveFrameIndex
+- String[] waitRedImage
+- String[] waitBlueImage
++ void taskAlert()
++ void AlertAnimation(long)
++ void ActiveAnimation()
++ void Active()
+}
+class item.component.WashingMachine {
+- ImageView wait
+- long lastUpdateTime
+- int currentWaitFrameIndex
+~ boolean active
+- String[] waitBlueImage
++ void startAnimation()
++ void Active()
+}
+class item.Object {
+}
+class item.component.Rider {
+- ImageView alert
+- boolean isAlert
+- long lastUpdateTime
+- int currentWaitFrameIndex
+- String[] waitRedImage
++ void Active()
++ void taskAlert()
+}
+class utils.Goto {
+- {static} RootPane rootPane
++ {static} void setPane(RootPane)
++ {static} void MainMenuPage()
++ {static} void gameOverPage(int)
++ {static} void gameMap()
++ {static} void clear()
+}
+class Game.Player {
++ String[] CR_front
++ String[] CR_side_right
++ String[] CR_side_left
++ String[] CIdle
+- int speed
+- int score
+- Text scoreText
+- int hearts
+- int max_hearts
+- {static} Player instance
++ void scoreText()
++ {static} Player getInstance()
++ void decreaseHearts()
++ void setSpeed(int)
++ void setHearts(int)
++ int getHearts()
+}
+class pane.GameMap {
+~ int tileSize
+~ int screenWidth
+~ int screenHeight
++ Player player
+- long lastPressedTime
+- boolean movingUp
+- boolean movingDown
+- boolean movingLeft
+- boolean movingRight
+- int currentFrameIndex
+- GroupObjectActivable clothBucket
+- ImageView buttonE
+- WashingMachine washingMachine
+- Bin bin
+- Sink sink
+- WaterOnTheFloor waterOnTheFloor
+- Rider rider
+- GasStove gasStove
+- boolean isPressE
+- int scoreTime
+- Timeline gameTimer
+- List<ImageView> hearts
+- Label xy
+- List<AnimationTimer> timers
+- Text timeText
+- double minX
+- double maxX
+- double minY
+- double maxY
+- {static} GameMap instance
++ {static} GameMap getInstance()
++ void updateHearts()
++ void setKeyHandlers()
++ void startAnimation()
+- void startGameTimer()
++ int getScoreTime()
++ void resetScore()
++ void showE()
++ void ifAnimationFrontDown(long)
++ void ifAnimationSideRight(long)
++ void ifAnimationSideLeft(long)
++ void ifAnimationIdle(long)
++ void movePlayer()
++ void WallBack()
++ void WallFront()
++ void HouseFloor()
++ void shadows()
++ void place(String,double,double,double,double)
++ void place(String,double,double,double,double,double)
++ void window()
++ void curtain()
++ void washingMachine()
++ void bin()
++ void sink()
++ void waterOnFloor()
++ void gasStove()
++ void ClothBucket()
++ void rider()
++ void ButtonE()
++ void score()
++ void playerStartPosition()
++ void setScreen()
++ void initialHearts()
++ int getScreenWidth()
++ int getScreenHeight()
++ Player getPlayer()
++ long getLastPressedTime()
++ void setLastPressedTime(long)
++ boolean isMovingUp()
++ void setMovingUp(boolean)
++ boolean isMovingDown()
++ void setMovingDown(boolean)
++ boolean isMovingLeft()
++ void setMovingLeft(boolean)
++ boolean isMovingRight()
++ void setMovingRight(boolean)
++ int getCurrentFrameIndex()
++ void setCurrentFrameIndex(int)
++ GroupObjectActivable getClothBucket()
++ void setClothBucket(GroupObjectActivable)
++ ImageView getButtonE()
++ void setButtonE(ImageView)
++ WashingMachine getWashingMachine()
++ void setWashingMachine(WashingMachine)
++ Bin getBin()
++ void setBin(Bin)
++ Sink getSink()
++ void setSink(Sink)
++ WaterOnTheFloor getWaterOnTheFloor()
++ void setWaterOnTheFloor(WaterOnTheFloor)
++ Rider getRider()
++ void setRider(Rider)
++ GasStove getGasStove()
++ void setGasStove(GasStove)
++ boolean isPressE()
++ void setPressE(boolean)
++ void setScoreTime(int)
++ Timeline getGameTimer()
++ void setGameTimer(Timeline)
++ List<ImageView> getHearts()
++ void setHearts(List<ImageView>)
++ Text getTimeText()
++ double getMinX()
++ double getMaxX()
++ double getMinY()
++ double getMaxY()
++ {static} void setInstance(GameMap)
+}
+interface Interface.activeAble {
+~ {static} boolean active
+~ void Active()
+}
+class utils.TimerManager {
+- {static} TimerManager instance
+- List<AnimationTimer> timers
+- List<Timeline> timelines
++ {static} TimerManager getInstance()
++ void addTimer(AnimationTimer)
++ void addTimeline(Timeline)
++ void stopAllTimers()
++ void stopAllTimelines()
++ void stopAll()
+}
+class pane.RootPane {
+- {static} RootPane instance
++ {static} RootPane getRootPane()
+}
+class item.component.WaterOnTheFloor {
+- ImageView alert
+- boolean isAlert
+- long lastUpdateTime
+- int currentWaitFrameIndex
+- String[] waitRedImage
++ void taskAlert()
++ void Active()
+}
+class pane.GameOver {
+- VBox vbox
++ void gameOverText()
++ void scoreText(int)
++ void startButton()
++ void initialVbox()
++ void setVbox(VBox)
++ VBox getVbox()
+}
+class item.GroupObjectActivable {
++ Object instance
++ boolean Canselect(Player)
++ Object getInstance()
++ void setInstance(Object)
+}
+interface Interface.taskAble {
+~ void taskAlert()
+}
+class item.component.Sink {
+- ImageView alert
+- boolean isAlert
+- long lastUpdateTime
+- int holdAction
+- int currentWaitFrameIndex
+- int currentActiveFrameIndex
+- String[] waitRedImage
+- String[] waitBlueImage
++ void taskAlert()
++ void AlertAnimation(long)
++ void ActiveAnimation()
++ void Active()
+}
+class item.component.Bin {
+- ImageView alert
+- boolean isAlert
+- long lastUpdateTime
+- int currentWaitFrameIndex
+- double multiply
+- String[] waitRedImage
++ void taskAlert()
++ void Active()
+}
+class pane.MainMenu {
+- VBox vbox
++ void setBackGround()
++ void startGameButton()
++ void quitGameButton()
++ void initialVbox()
++ void setVbox(VBox)
++ VBox getVbox()
+}
+
+
+javafx.application.Application <|-- main
+Interface.taskAble <|.. item.component.GasStove
+Interface.activeAble <|.. item.component.GasStove
+item.GroupObjectActivable <|-- item.component.GasStove
+Interface.activeAble <|.. item.component.WashingMachine
+item.GroupObjectActivable <|-- item.component.WashingMachine
+javafx.scene.image.ImageView <|-- item.Object
+Interface.taskAble <|.. item.component.Rider
+Interface.activeAble <|.. item.component.Rider
+item.GroupObjectActivable <|-- item.component.Rider
+javafx.scene.image.ImageView <|-- Game.Player
+javafx.scene.layout.StackPane <|-- pane.GameMap
+javafx.scene.layout.StackPane <|-- pane.RootPane
+Interface.taskAble <|.. item.component.WaterOnTheFloor
+Interface.activeAble <|.. item.component.WaterOnTheFloor
+item.GroupObjectActivable <|-- item.component.WaterOnTheFloor
+javafx.scene.layout.StackPane <|-- pane.GameOver
+javafx.scene.Group <|-- item.GroupObjectActivable
+Interface.taskAble <|.. item.component.Sink
+Interface.activeAble <|.. item.component.Sink
+item.GroupObjectActivable <|-- item.component.Sink
+Interface.taskAble <|.. item.component.Bin
+Interface.activeAble <|.. item.component.Bin
+item.GroupObjectActivable <|-- item.component.Bin
+pane.StackPane <|-- pane.MainMenu
+@enduml

@@ -10,40 +10,48 @@ import javafx.scene.text.FontWeight;
 import utils.Goto;
 
 public class GameOver extends StackPane {
-    private static GameOver instance;
-    private Label scoreLabel = new Label();
-    private VBox vbox = new VBox(20);
+    private VBox vbox;
     public GameOver(int score){
+        initialVbox();
+        gameOverText();
+        scoreText(score);
+        startButton();
+    }
 
+    public void gameOverText(){
         Label gameOverLabel = new Label("GAME OVER");
         gameOverLabel.setFont(Font.font("Arial", FontWeight.BOLD, 50)); // Set font to Arial, bold, size 50
         gameOverLabel.setAlignment(Pos.CENTER); // Center align the label
+        getVbox().getChildren().add(gameOverLabel);
+    }
 
+    public void scoreText(int score){
+        Label scoreLabel = new Label();
         scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 30));
-        scoreLabel.setText("Score: " + GameMap.getInstance().getScoreTime());
-        System.out.println("Score: " + GameMap.getInstance().getScoreTime());
+        scoreLabel.setText("Score: " + score);
+        getVbox().getChildren().add(scoreLabel);
+    }
 
+    public void startButton(){
         Button start = new Button("Back to Main Menu");
         start.setOnMouseClicked(mouseEvent -> {
             Goto.MainMenuPage();
             GameMap.getInstance().resetScore();
         });
-        vbox.getChildren().addAll(gameOverLabel,scoreLabel, start); // Add the label and button to the VBox
-        vbox.setAlignment(Pos.CENTER); // Center align the VBox
-        scoreLabel.setText("Score: " + score);
-
-         // Add the VBox to the pane
-        getChildren().add(vbox);
+        getVbox().getChildren().add(start);
     }
 
-    public static GameOver getGameOver(){
-        if(instance == null){instance = new GameOver(0);}
-        return instance;
+    public void initialVbox(){
+        setVbox(new VBox(20));
+        getVbox().setAlignment(Pos.CENTER);
+        getChildren().add(getVbox());
     }
-    public void updateScore(int score) {
-        System.out.println("Updating score: " + score);
-        // Update scoreLabel
-        scoreLabel.setText("Score: " + score);
-        // Add scoreLabel back to vbox
+
+    public void setVbox(VBox vbox) {
+        this.vbox = vbox;
+    }
+
+    public VBox getVbox() {
+        return vbox;
     }
 }

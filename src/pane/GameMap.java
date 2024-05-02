@@ -27,14 +27,13 @@ public class GameMap extends StackPane {
     final int tileSize = 48; //16*16*3
     final int screenWidth = tileSize * 16;
     final int screenHeight = tileSize * 12;
-    Player player = Player.getInstance();
-
+    public Player player = Player.getInstance();
     private long lastPressedTime = 0;
     private boolean movingUp = false;
     private boolean movingDown = false;
     private boolean movingLeft = false;
     private boolean movingRight = false;
-    int currentFrameIndex = 0;
+    private int currentFrameIndex = 0;
     private GroupObjectActivable clothBucket;
     private ImageView buttonE;
     private WashingMachine washingMachine;
@@ -43,228 +42,103 @@ public class GameMap extends StackPane {
     private WaterOnTheFloor waterOnTheFloor;
     private Rider rider;
     private GasStove gasStove;
-    boolean isPressE = false;
+    private boolean isPressE = false;
     private int scoreTime = 0;
     private Timeline gameTimer;
     private List<ImageView> hearts;
-    private Label xy = new Label();
-    private List<AnimationTimer> timers = new ArrayList<>();
-    private Text timeText = new Text();
-    double minX = -285.0; // Minimum x value
-    double maxX = 280.0; // Maximum x value
-    double minY = -80.0; // Minimum y value
-    double maxY = 140.0; // Maximum y value
+    private final Label xy = new Label();
+    private final List<AnimationTimer> timers = new ArrayList<>();
+    private final Text timeText = new Text();
+    private final double minX = -285.0; // Minimum x value
+    private final double maxX = 280.0; // Maximum x value
+    private final double minY = -80.0; // Minimum y value
+    private final double maxY = 140.0; // Maximum y value
     private static GameMap instance;
     public GameMap() {
-        player.setTranslateX(0);
-        player.setTranslateY(0);
         HouseFloor();
         WallBack();
-
-        ImageView window = new ImageView("Component/Wall/Window.png");
-        window.setFitWidth(280);
-        window.setFitHeight(140);
-        window.setTranslateY(-270);
-        getChildren().add(window);
-        ImageView curtain = new ImageView("Component/Wall/curtain.png");
-        curtain.setFitWidth(280);
-        curtain.setFitHeight(140);
-        curtain.setTranslateY(-270);
-        getChildren().add(curtain);
-
+        window();
+        curtain();
         startGameTimer();
-
-        Player.getInstance().setHearts(3);
-
-        washingMachine = new WashingMachine();
-        washingMachine.setScaleX(0.2);
-        washingMachine.setScaleY(0.2);
-        washingMachine.setTranslateY(-150);
-        washingMachine.setTranslateX(300);
-        getChildren().add(washingMachine);
-
-        bin = new Bin();
-        bin.setScaleX(0.2);
-        bin.setScaleY(0.2);
-        bin.setTranslateX(-125);
-        bin.setTranslateY(-150);
-        getChildren().add(bin);
-        bin.taskAlert();
-
-        sink = new Sink();
-        sink.setScaleX(0.3);
-        sink.setScaleY(0.3);
-        sink.setTranslateX(-250);
-        sink.setTranslateY(-175);
-        getChildren().add(sink);
-        sink.taskAlert();
-
-        waterOnTheFloor = new WaterOnTheFloor();
-        waterOnTheFloor.setScaleX(0.2);
-        waterOnTheFloor.setScaleY(0.2);
-        waterOnTheFloor.setTranslateX(minX + (Math.random() * (maxX - minX)));
-        waterOnTheFloor.setTranslateY(minY + (Math.random() * (maxY - minY)));
-        getChildren().add(waterOnTheFloor);
-        waterOnTheFloor.taskAlert();
-
-        gasStove = new GasStove();
-        gasStove.setScaleX(0.3);
-        gasStove.setScaleY(0.3);
-        gasStove.setTranslateX(-440);
-        gasStove.setTranslateY(0);
-        getChildren().add(gasStove);
-        gasStove.taskAlert();
-
-        clothBucket = new GroupObjectActivable("Component/WashingMachine/ClothBucket.png");
-        clothBucket.setTranslateX(150);
-        clothBucket.setTranslateY(-145);
-        clothBucket.setScaleX(0.2);
-        clothBucket.setScaleY(0.2);
-        getChildren().add(clothBucket);
-
-        //for position check
-        xy.setFont(Font.font("Arial", FontWeight.BOLD, 30));
-        xy.setStyle("-fx-text-fill: black; -fx-stroke: black; -fx-stroke-width: 1px;");
-        xy.setText("X : "+player.getTranslateX()+"\nY : "+player.getTranslateY());
-        xy.setTranslateY(player.getTranslateY());
-        xy.setTranslateX(player.getTranslateX());
-
-        getChildren().add(xy);
-
-        //display time
-        getChildren().add(timeText);
-        timeText.setTranslateX(630);
-        timeText.setTranslateY(-350);
-        timeText.setScaleX(2);
-        timeText.setScaleY(2);
-        timeText.setText("Score: " + 0);
-        timeText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-
-        // Initialize the hearts list
-        hearts = new ArrayList<>();
-
-        // Add the initial number of hearts to the list
+        washingMachine();
+        ClothBucket();
+        bin();
+        sink();
+        waterOnFloor();
+        gasStove();
+        initialHearts();
         updateHearts();
-
-        //System.out.println("testwalk");
-        this.setWidth(screenWidth);
-        this.setHeight(screenHeight);
-        this.setFocusTraversable(true);
-        getChildren().add(player);
+        setScreen();
         setKeyHandlers();
         startAnimation();
-
-
+        playerStartPosition();
         WallFront();
-
-        rider = new Rider();
-        rider.setScaleX(0.4);
-        rider.setScaleY(0.4);
-        rider.setTranslateX(650);
-        rider.setTranslateY(150);
-        getChildren().add(rider);
-        rider.taskAlert();
-
-        buttonE = new ImageView("UI/ebutton/E_Button1.png");
-        buttonE.setFitWidth(100);
-        buttonE.setFitHeight(100);
-        buttonE.setTranslateX(0);
-        buttonE.setTranslateY(300);
-        getChildren().add(buttonE);
-        buttonE.setVisible(false);
-
+        rider();
+        ButtonE();
+        score();
         shadows();
     }
 
-    public void checkPosition(){
-        xy.setText("X : "+player.getTranslateX()+"\nY : "+player.getTranslateY());
-        xy.setTranslateY(player.getTranslateY() - 130);
-        xy.setTranslateX(player.getTranslateX());
-    }
 
     public static GameMap getInstance() {
         if (instance == null) {
-            instance = new GameMap();
+            setInstance(new GameMap());
         }
         return instance;
     }
 
     public void updateHearts() {
-        // Remove all heart images from the game map
-        getChildren().removeAll(hearts);
-
-        // Clear the hearts list
-        hearts.clear();
-
-        // Load the heart image
+        getChildren().removeAll(getHearts());
+        getHearts().clear();
         Image heartImage = new Image("Component/Heart/heart.png");
-
-        // Add the current number of hearts to the list
-        for (int i = 0; i < player.getHearts(); i++) {
-            // Create a new ImageView object for the heart
+        for (int i = 0; i < getPlayer().getHearts(); i++) {
             ImageView heart = new ImageView(heartImage);
-
-            // Set the size of the heart
             heart.setFitWidth(60);
             heart.setFitHeight(60);
-
-            // Position the heart in the top right corner
-            heart.setTranslateX(-700 + i * 60); // Adjust these values as needed
+            heart.setTranslateX(-700 + i * 60);
             heart.setTranslateY(-350);
-
-            // Add the heart to the hearts list
-            hearts.add(heart);
+            getHearts().add(heart);
         }
-
-        // Add the hearts to the game map
-        getChildren().addAll(hearts);
+        getChildren().addAll(getHearts());
     }
 
     public void setKeyHandlers() {
         this.setOnKeyPressed(event -> {
             long currentTime = System.nanoTime();
             if (event.getCode() == KeyCode.W) {
-                movingUp = true;
-                lastPressedTime = currentTime;
-                //System.out.println("true");
+                setMovingUp(true);
+                setLastPressedTime(currentTime);
             } else if (event.getCode() == KeyCode.A) {
-                movingLeft = true;
-                lastPressedTime = currentTime;
-                //System.out.println("true");
+                setMovingLeft(true);
+                setLastPressedTime(currentTime);
             } else if (event.getCode() == KeyCode.S) {
-                movingDown = true;
-                lastPressedTime = currentTime;
-                //System.out.println("true");
+                setMovingDown(true);
+                setLastPressedTime(currentTime);
             } else if (event.getCode() == KeyCode.D) {
-                movingRight = true;
-                lastPressedTime = currentTime;
-                //System.out.println("true");
+                setMovingRight(true);
+                setLastPressedTime(currentTime);
             } else if (event.getCode() == KeyCode.E){
-                buttonE.setImage(new Image("UI/ebutton/E_Button2.png"));
-                isPressE = true;
+                getButtonE().setImage(new Image("UI/ebutton/E_Button2.png"));
+                setPressE(true);
         }
         });
 
         this.setOnKeyReleased(event -> {
             if (event.getCode() == KeyCode.W) {
-                movingUp = false;
-                //System.out.println("false");
-                currentFrameIndex = 0;
+                setMovingUp(false);
+                setCurrentFrameIndex(0);
             } else if (event.getCode() == KeyCode.A) {
-                movingLeft = false;
-                //System.out.println("false");
-                currentFrameIndex = 0;
+                setMovingLeft(false);
+                setCurrentFrameIndex(0);
             } else if (event.getCode() == KeyCode.S) {
-                movingDown = false;
-                //System.out.println("false");
-                currentFrameIndex = 0;
+                setMovingDown(false);
+                setCurrentFrameIndex(0);
             } else if (event.getCode() == KeyCode.D) {
-                movingRight = false;
-                //System.out.println("false");
-                currentFrameIndex = 0;
+                setMovingRight(false);
+                setCurrentFrameIndex(0);
             } else if (event.getCode() == KeyCode.E){
-                buttonE.setImage(new Image("UI/ebutton/E_Button1.png"));
-                isPressE = false;
+                getButtonE().setImage(new Image("UI/ebutton/E_Button1.png"));
+                setPressE(false);
             }
         });
     }
@@ -279,19 +153,14 @@ public class GameMap extends StackPane {
                 ifAnimationSideLeft(now);
                 ifAnimationIdle(now);
                 showE();
-                checkPosition();
-
-                // Check if the player's hearts have decreased
-                if (Player.getInstance().getHearts() < hearts.size()) {
-                    // Update the hearts on the game map
+                if (Player.getInstance().getHearts() < getHearts().size()) {
                     updateHearts();
                 }
                 if(Player.getInstance().getHearts()==0){
                     TimerManager.getInstance().stopAll();
-                    System.out.println("Game ended. Score: " + scoreTime);
-                    Goto.gameOverPage(scoreTime);
+                    System.out.println("Game ended. Score: " + getScoreTime());
+                    Goto.gameOverPage(getScoreTime());
                 }
-
             }
         };
         timer.start();
@@ -300,16 +169,13 @@ public class GameMap extends StackPane {
     }
 
     private void startGameTimer() {
-        gameTimer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            scoreTime+=10;
-            timeText.setText("Score: " + scoreTime); // Update the score display
-        }));
-        gameTimer.setCycleCount(Timeline.INDEFINITE);
-        gameTimer.play();
-
-
-        // Add the Timeline to your TimerManager to ensure it gets stopped when the game ends
-        TimerManager.getInstance().addTimeline(gameTimer);
+        setGameTimer(new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            setScoreTime(getScoreTime()+10);
+            getTimeText().setText("Score: " + getScoreTime());
+        })));
+        getGameTimer().setCycleCount(Timeline.INDEFINITE);
+        getGameTimer().play();
+        TimerManager.getInstance().addTimeline(getGameTimer());
     }
 
     public int getScoreTime() {
@@ -320,105 +186,83 @@ public class GameMap extends StackPane {
         scoreTime = 0;
     }
 
-    public void stopGameTimer() {
-        if (gameTimer != null) {
-            gameTimer.stop();
-        }
-    }
-
-    public void stopAllTimers() {
-        for (AnimationTimer timer : timers) {
-            timer.stop();
-        }
-    }
-
-
-
     public void showE(){
-        if(clothBucket.Canselect(player) || washingMachine.Canselect(player) || bin.Canselect(player) || sink.Canselect(player) || waterOnTheFloor.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) || gasStove.Canselect(player) || rider.Canselect(player) ){
-            buttonE.setVisible(true);
-            if(isPressE){
-                if(washingMachine.Canselect(player)){washingMachine.Active();}
-                else if (bin.Canselect(player)) { bin.Active(); }
-                else if (sink.Canselect(player)) { sink.Active(); }
-                else if (gasStove.Canselect(player)) { gasStove.Active(); }
-                else if (rider.Canselect(player)) { rider.Active(); }
-                else if (waterOnTheFloor.Canselect(player)) {
-                    waterOnTheFloor.setTranslateX(minX + (Math.random() * (maxX - minX)));
-                    waterOnTheFloor.setTranslateY(minY + (Math.random() * (maxY - minY)));
-                    waterOnTheFloor.Active();
+        if(getClothBucket().Canselect(getPlayer()) || getWashingMachine().Canselect(getPlayer()) || getBin().Canselect(getPlayer()) || getSink().Canselect(getPlayer()) || getWaterOnTheFloor().Canselect(getPlayer()) || getGasStove().Canselect(getPlayer()) || getRider().Canselect(getPlayer())){
+            getButtonE().setVisible(true);
+            if(isPressE()){
+                if(getWashingMachine().Canselect(getPlayer())){getWashingMachine().Active();}
+                else if (getBin().Canselect(getPlayer())) { getBin().Active(); }
+                else if (getSink().Canselect(getPlayer())) { getSink().Active(); }
+                else if (getGasStove().Canselect(getPlayer())) { getGasStove().Active(); }
+                else if (getRider().Canselect(getPlayer())) { getRider().Active(); }
+                else if (getWaterOnTheFloor().Canselect(getPlayer())) {
+                    getWaterOnTheFloor().setTranslateX(getMinX() + (Math.random() * (getMaxX() - getMinX())));
+                    getWaterOnTheFloor().setTranslateY(getMinY() + (Math.random() * (getMaxY() - getMinY())));
+                    getWaterOnTheFloor().Active();
                 }
             }
         }else {
-            buttonE.setVisible(false);
+            getButtonE().setVisible(false);
         }
     }
 
     public  void ifAnimationFrontDown(long now){
-        if (movingUp || movingDown) {
-            long elapsedTime = now - lastPressedTime;
-            if (elapsedTime >= 20_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
-                // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                //System.out.println(currentFrameIndex);
-                //System.out.println(player.CR_front[currentFrameIndex % 8]);
-                player.setImage(new Image(player.CR_front[currentFrameIndex % 8]));
-                currentFrameIndex++;
-                lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
+        if (isMovingUp() || isMovingDown()) {
+            long elapsedTime = now - getLastPressedTime();
+            if (elapsedTime >= 20_000_000) {
+                getPlayer().setImage(new Image(getPlayer().CR_front[getCurrentFrameIndex() % 8]));
+                setCurrentFrameIndex(getCurrentFrameIndex()+1);
+                setLastPressedTime(now);
             }
         }
     }
 
     public  void ifAnimationSideRight(long now){
-        if ( movingRight ) {
-            long elapsedTime = now - lastPressedTime;
-            if (elapsedTime >= 20_000_000) { // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
-                // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                player.setImage(new Image(player.CR_side_right[currentFrameIndex % 10]));
-                currentFrameIndex++;
-                lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
+        if ( isMovingRight() ) {
+            long elapsedTime = now - getLastPressedTime();
+            if (elapsedTime >= 20_000_000) {
+                getPlayer().setImage(new Image(getPlayer().CR_side_right[getCurrentFrameIndex() % 10]));
+                setCurrentFrameIndex(getCurrentFrameIndex()+1);
+                setLastPressedTime(now);
             }
         }
     }
     public  void ifAnimationSideLeft(long now){
-        if (movingLeft) {
-            long elapsedTime = now - lastPressedTime;
+        if (isMovingLeft()) {
+            long elapsedTime = now - getLastPressedTime();
             if (elapsedTime >= 20_000_000) {
-                // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
-                // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                //System.out.println(currentFrameIndex);
-                //System.out.println(player.CR_side_left[currentFrameIndex % 10]);
-                player.setImage(new Image(player.CR_side_left[currentFrameIndex % 10]));
-                currentFrameIndex++;
-                lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
+                getPlayer().setImage(new Image((getPlayer().CR_side_left[getCurrentFrameIndex() % 10])));
+                setCurrentFrameIndex(getCurrentFrameIndex()+1);
+                setLastPressedTime(now);
             }
         }
     }
     public  void ifAnimationIdle(long now){
-        if ( !(movingLeft || movingRight || movingUp || movingDown) ) {
-            long elapsedTime = now - lastPressedTime;
+        if ( !(isMovingLeft() || isMovingRight() || isMovingUp() || isMovingDown()) ) {
+            long elapsedTime = now - getLastPressedTime();
             if (elapsedTime >= 500_000_000) {
                 // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
                 // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
-                player.setImage(new Image(player.CIdle[currentFrameIndex % 2]));
-                currentFrameIndex++;
-                lastPressedTime = now; // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
+                getPlayer().setImage(new Image(getPlayer().CIdle[getCurrentFrameIndex() % 2]));
+                setCurrentFrameIndex(getCurrentFrameIndex()+1);
+                setLastPressedTime(now); // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
             }
         }
     }
 
     public void movePlayer() {
-        if (movingUp && (((player.getTranslateY() >= -140 && player.getTranslateX() <= 360) || ((player.getTranslateY()>=-30) && (player.getTranslateX()>=360 && player.getTranslateX()<=560))) || (player.getTranslateX()>=560)
+        if (isMovingUp() && (((getPlayer().getTranslateY() >= -140 && getPlayer().getTranslateX() <= 360) || ((getPlayer().getTranslateY()>=-30) && (getPlayer().getTranslateX()>=360 && getPlayer().getTranslateX()<=560))) || (getPlayer().getTranslateX()>=560)
                 )){
-            player.setTranslateY(player.getTranslateY() - 5);
+            getPlayer().setTranslateY(getPlayer().getTranslateY() - 5);
         }
-        if (movingDown && ((player.getTranslateY() < 365) && !(player.getTranslateX()>450 && player.getTranslateX()<560) || (player.getTranslateY()>-40 && player.getTranslateY()<25))) {
-            player.setTranslateY(player.getTranslateY() + 5);
+        if (isMovingDown() && ((getPlayer().getTranslateY() < 365) && !(getPlayer().getTranslateX()>450 && getPlayer().getTranslateX()<560) || (getPlayer().getTranslateY()>-40 && getPlayer().getTranslateY()<25))) {
+            getPlayer().setTranslateY(getPlayer().getTranslateY() + 5);
         }
-        if (movingLeft && (player.getTranslateX()>-360) && (player.getTranslateX()!=560 || (player.getTranslateY()>-40 && player.getTranslateY()<25))){
-            player.setTranslateX(player.getTranslateX() - 5);
+        if (isMovingLeft() && (getPlayer().getTranslateX()>-360) && (getPlayer().getTranslateX()!=560 || (getPlayer().getTranslateY()>-40 && getPlayer().getTranslateY()<25))){
+            getPlayer().setTranslateX(getPlayer().getTranslateX() - 5);
         }
-        if (movingRight && ((player.getTranslateX()<325) || (!(player.getTranslateY()>=-145 && player.getTranslateY()<-40)) && ((player.getTranslateX()!=450)||(player.getTranslateY()>-40 && player.getTranslateY()<25)))) {
-            player.setTranslateX(player.getTranslateX() + 5);
+        if (isMovingRight() && ((getPlayer().getTranslateX()<325) || (!(getPlayer().getTranslateY()>=-145 && getPlayer().getTranslateY()<-40)) && ((getPlayer().getTranslateX()!=450)||(getPlayer().getTranslateY()>-40 && getPlayer().getTranslateY()<25)))) {
+            getPlayer().setTranslateX(getPlayer().getTranslateX() + 5);
         }
 
     }
@@ -521,5 +365,304 @@ public class GameMap extends StackPane {
         obj.setTranslateY(y);
         obj.setOpacity(o);
         getChildren().add(obj);
+    }
+
+    public void window(){
+        ImageView window = new ImageView("Component/Wall/Window.png");
+        window.setFitWidth(280);
+        window.setFitHeight(140);
+        window.setTranslateY(-270);
+        getChildren().add(window);
+    }
+
+    public void curtain(){
+        ImageView curtain = new ImageView("Component/Wall/curtain.png");
+        curtain.setFitWidth(280);
+        curtain.setFitHeight(140);
+        curtain.setTranslateY(-270);
+        getChildren().add(curtain);
+    }
+
+    public void washingMachine(){
+        setWashingMachine(new WashingMachine());
+        getWashingMachine().setScaleX(0.2);
+        getWashingMachine().setScaleY(0.2);
+        getWashingMachine().setTranslateY(-150);
+        getWashingMachine().setTranslateX(300);
+        getChildren().add(getWashingMachine());
+    }
+
+    public void bin(){
+        setBin(new Bin());
+        getBin().setScaleX(0.2);
+        getBin().setScaleY(0.2);
+        getBin().setTranslateX(-125);
+        getBin().setTranslateY(-150);
+        getChildren().add(getBin());
+        getBin().taskAlert();
+    }
+
+    public void sink(){
+        setSink(new Sink());
+        getSink().setScaleX(0.3);
+        getSink().setScaleY(0.3);
+        getSink().setTranslateX(-250);
+        getSink().setTranslateY(-175);
+        getChildren().add(getSink());
+        getSink().taskAlert();
+    }
+
+    public void waterOnFloor(){
+        setWaterOnTheFloor(new WaterOnTheFloor());
+        getWaterOnTheFloor().setScaleX(0.2);
+        getWaterOnTheFloor().setScaleY(0.2);
+        getWaterOnTheFloor().setTranslateX(getMinX() + (Math.random() * (getMaxX() - getMinX())));
+        getWaterOnTheFloor().setTranslateY(getMinY() + (Math.random() * (getMaxY() - getMinY())));
+        getChildren().add(getWaterOnTheFloor());
+        getWaterOnTheFloor().taskAlert();
+    }
+
+   public void gasStove(){
+       setGasStove(new GasStove());
+       getGasStove().setScaleX(0.3);
+       getGasStove().setScaleY(0.3);
+       getGasStove().setTranslateX(-440);
+       getGasStove().setTranslateY(0);
+       getChildren().add(getGasStove());
+       getGasStove().taskAlert();
+   }
+
+   public void ClothBucket(){
+       setClothBucket(new GroupObjectActivable("Component/WashingMachine/ClothBucket.png"));
+       getClothBucket().setTranslateX(150);
+       getClothBucket().setTranslateY(-145);
+       getClothBucket().setScaleX(0.2);
+       getClothBucket().setScaleY(0.2);
+       getChildren().add(getClothBucket());
+   }
+
+   public void rider(){
+       setRider(new Rider());
+       getRider().setScaleX(0.4);
+       getRider().setScaleY(0.4);
+       getRider().setTranslateX(650);
+       getRider().setTranslateY(150);
+       getChildren().add(getRider());
+       getRider().taskAlert();
+   }
+
+   public void ButtonE(){
+       setButtonE(new ImageView("UI/ebutton/E_Button1.png"));
+       getButtonE().setFitWidth(100);
+       getButtonE().setFitHeight(100);
+       getButtonE().setTranslateX(0);
+       getButtonE().setTranslateY(300);
+       getChildren().add(getButtonE());
+       getButtonE().setVisible(false);
+   }
+
+   public void score(){
+       getChildren().add(getTimeText());
+       getTimeText().setTranslateX(630);
+       getTimeText().setTranslateY(-350);
+       getTimeText().setScaleX(2);
+       getTimeText().setScaleY(2);
+       getTimeText().setText("Score: " + 0);
+       getTimeText().setFont(Font.font("Arial", FontWeight.BOLD, 16));
+   }
+
+   public void playerStartPosition(){
+       getPlayer().setTranslateX(0);
+       getPlayer().setTranslateY(0);
+       getChildren().add(getPlayer());
+   }
+
+   public void setScreen(){
+       this.setWidth(getScreenWidth());
+       this.setHeight(getScreenHeight());
+       this.setFocusTraversable(true);
+   }
+
+   public void initialHearts(){
+       Player.getInstance().setHearts(3);
+       setHearts(new ArrayList<>());
+   }
+
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public long getLastPressedTime() {
+        return lastPressedTime;
+    }
+
+    public void setLastPressedTime(long lastPressedTime) {
+        this.lastPressedTime = lastPressedTime;
+    }
+
+    public boolean isMovingUp() {
+        return movingUp;
+    }
+
+    public void setMovingUp(boolean movingUp) {
+        this.movingUp = movingUp;
+    }
+
+    public boolean isMovingDown() {
+        return movingDown;
+    }
+
+    public void setMovingDown(boolean movingDown) {
+        this.movingDown = movingDown;
+    }
+
+    public boolean isMovingLeft() {
+        return movingLeft;
+    }
+
+    public void setMovingLeft(boolean movingLeft) {
+        this.movingLeft = movingLeft;
+    }
+
+    public boolean isMovingRight() {
+        return movingRight;
+    }
+
+    public void setMovingRight(boolean movingRight) {
+        this.movingRight = movingRight;
+    }
+
+    public int getCurrentFrameIndex() {
+        return currentFrameIndex;
+    }
+
+    public void setCurrentFrameIndex(int currentFrameIndex) {
+        this.currentFrameIndex = currentFrameIndex;
+    }
+
+    public GroupObjectActivable getClothBucket() {
+        return clothBucket;
+    }
+
+    public void setClothBucket(GroupObjectActivable clothBucket) {
+        this.clothBucket = clothBucket;
+    }
+
+    public ImageView getButtonE() {
+        return buttonE;
+    }
+
+    public void setButtonE(ImageView buttonE) {
+        this.buttonE = buttonE;
+    }
+
+    public WashingMachine getWashingMachine() {
+        return washingMachine;
+    }
+
+    public void setWashingMachine(WashingMachine washingMachine) {
+        this.washingMachine = washingMachine;
+    }
+
+    public Bin getBin() {
+        return bin;
+    }
+
+    public void setBin(Bin bin) {
+        this.bin = bin;
+    }
+
+    public Sink getSink() {
+        return sink;
+    }
+
+    public void setSink(Sink sink) {
+        this.sink = sink;
+    }
+
+    public WaterOnTheFloor getWaterOnTheFloor() {
+        return waterOnTheFloor;
+    }
+
+    public void setWaterOnTheFloor(WaterOnTheFloor waterOnTheFloor) {
+        this.waterOnTheFloor = waterOnTheFloor;
+    }
+
+    public Rider getRider() {
+        return rider;
+    }
+
+    public void setRider(Rider rider) {
+        this.rider = rider;
+    }
+
+    public GasStove getGasStove() {
+        return gasStove;
+    }
+
+    public void setGasStove(GasStove gasStove) {
+        this.gasStove = gasStove;
+    }
+
+    public boolean isPressE() {
+        return isPressE;
+    }
+
+    public void setPressE(boolean pressE) {
+        isPressE = pressE;
+    }
+
+    public void setScoreTime(int scoreTime) {
+        this.scoreTime = scoreTime;
+    }
+
+    public Timeline getGameTimer() {
+        return gameTimer;
+    }
+
+    public void setGameTimer(Timeline gameTimer) {
+        this.gameTimer = gameTimer;
+    }
+
+    public List<ImageView> getHearts() {
+        return hearts;
+    }
+
+    public void setHearts(List<ImageView> hearts) {
+        this.hearts = hearts;
+    }
+
+
+    public Text getTimeText() {
+        return timeText;
+    }
+
+    public double getMinX() {
+        return minX;
+    }
+
+    public double getMaxX() {
+        return maxX;
+    }
+
+    public double getMinY() {
+        return minY;
+    }
+
+    public double getMaxY() {
+        return maxY;
+    }
+
+    public static void setInstance(GameMap instance) {
+        GameMap.instance = instance;
     }
 }

@@ -83,4 +83,6 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
             this.instance.setImage(new Image("Component/bin/bin1.png"));
         }
     }
+
+
 }
