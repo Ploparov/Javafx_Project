@@ -24,34 +24,38 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
 
     public Sink() {
         super("Component/Sink/sink_withoutbowl.png");
-        alert = new ImageView("UI/Wait/WaitRed/WaitRed1.png");
-        alert.setFitWidth(200);
-        alert.setFitHeight(200);
-        alert.setTranslateX(200);
-        alert.setTranslateY(-100);
-        getChildren().add(alert);
-        alert.setVisible(false);
-        lastUpdateTime = System.nanoTime();
+        alert();
+        setLastUpdateTime(System.nanoTime());
+    }
+
+    public void alert(){
+        setAlert(new ImageView("UI/Wait/WaitRed/WaitRed1.png"));
+        getAlert().setFitWidth(200);
+        getAlert().setFitHeight(200);
+        getAlert().setTranslateX(200);
+        getAlert().setTranslateY(-100);
+        getChildren().add(getAlert());
+        getAlert().setVisible(false);
     }
 
     @Override
     public void taskAlert() {
-        isAlert = true;
-        this.instance.setImage(new Image("Component/Sink/sink_withoutbowl.png"));
-        alert.setVisible(false);
-        alert.setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
+        setIsAlert(true);
+        this.getInstance().setImage(new Image("Component/Sink/sink_withoutbowl.png"));
+        getAlert().setVisible(false);
+        getAlert().setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(isAlert){AlertAnimation(now);}
+                if(isAlert()){AlertAnimation(now);}
                 else {ActiveAnimation();}
             }
         };
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5 + Math.random()*10), event -> {
-            isAlert= true;
+            setIsAlert(true);
             timer.start();
         }));
-        timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
+        timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
         TimerManager.getInstance().addTimer(timer);
@@ -60,41 +64,95 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
 
     public void AlertAnimation(long now){
 
-        alert.setVisible(true);
-        instance.setImage(new Image("Component/Sink/sink_withbowl.png"));
-
-        long elapsedTime = now - lastUpdateTime;
-        if (elapsedTime >= 500_000_000) { // 100 milliseconds in nanoseconds
-            alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
-            currentWaitFrameIndex++;
-            if (currentWaitFrameIndex >= 17) {
+        getAlert().setVisible(true);
+        getInstance().setImage(new Image("Component/Sink/sink_withbowl.png"));
+        long elapsedTime = now - getLastUpdateTime();
+        if (elapsedTime >= 500_000_000) {
+            getAlert().setImage(new Image(getWaitRedImage()[getCurrentWaitFrameIndex() % 17]));
+            setCurrentWaitFrameIndex(getCurrentWaitFrameIndex() + 1);
+            if (getCurrentWaitFrameIndex() >= 17) {
                 Player.getInstance().decreaseHearts();
-                currentWaitFrameIndex = 0;
-                alert.setVisible(false);
+                setCurrentWaitFrameIndex(0);
+                getAlert().setVisible(false);
             }
-            lastUpdateTime = now; // Reset the last update time for timing
+            setLastUpdateTime(now);
         }
 
     }
 
     public void ActiveAnimation(){
-            if(holdAction >= 20){
-                currentActiveFrameIndex++;
-                holdAction = 0;
+            if(getHoldAction() >= 20){
+                setCurrentActiveFrameIndex(getCurrentActiveFrameIndex() + 1);
+                setHoldAction(0);
             }
-            alert.setImage(new Image(waitBlueImage[currentActiveFrameIndex % 17]));
-            //isAlert = true;
-            if (currentActiveFrameIndex >= 17) {
-                currentActiveFrameIndex = 0;
-                currentWaitFrameIndex = 0;
-                alert.setVisible(false);
-                instance.setImage(new Image("Component/Sink/sink_withoutbowl.png"));
+           getAlert().setImage(new Image(getWaitBlueImage()[getCurrentActiveFrameIndex() % 17]));
+            if (getCurrentActiveFrameIndex() >= 17) {
+                setCurrentActiveFrameIndex(0);
+                setCurrentWaitFrameIndex(0);
+                getAlert().setVisible(false);
+                getInstance().setImage(new Image("Component/Sink/sink_withoutbowl.png"));
             }
     }
 
     @Override
     public void Active() {
-        isAlert = false;
-        holdAction++;
+        setIsAlert(false);
+        setHoldAction(getHoldAction() + 1);
+    }
+
+    public ImageView getAlert() {
+        return alert;
+    }
+
+    public void setAlert(ImageView alert) {
+        this.alert = alert;
+    }
+
+    public boolean isAlert() {
+        return isAlert;
+    }
+
+    public void setIsAlert(boolean alert) {
+        isAlert = alert;
+    }
+
+    public long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(long lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public int getHoldAction() {
+        return holdAction;
+    }
+
+    public void setHoldAction(int holdAction) {
+        this.holdAction = holdAction;
+    }
+
+    public int getCurrentWaitFrameIndex() {
+        return currentWaitFrameIndex;
+    }
+
+    public void setCurrentWaitFrameIndex(int currentWaitFrameIndex) {
+        this.currentWaitFrameIndex = currentWaitFrameIndex;
+    }
+
+    public int getCurrentActiveFrameIndex() {
+        return currentActiveFrameIndex;
+    }
+
+    public void setCurrentActiveFrameIndex(int currentActiveFrameIndex) {
+        this.currentActiveFrameIndex = currentActiveFrameIndex;
+    }
+
+    public String[] getWaitRedImage() {
+        return waitRedImage;
+    }
+
+    public String[] getWaitBlueImage() {
+        return waitBlueImage;
     }
 }

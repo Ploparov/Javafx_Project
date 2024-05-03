@@ -27,11 +27,11 @@ public class Player extends ImageView {
         scoreText();
     }
     public void scoreText(){
-        scoreText = new Text();
-        scoreText.setText(Integer.toString(score));
-        scoreText.setFont(Font.font("Arial", FontWeight.BOLD, 80)); // Set font to Arial, bold, size 24
-        StackPane.setAlignment(scoreText, Pos.TOP_LEFT); // Align the text to the top-left
-        StackPane.setMargin(scoreText, new Insets(10));
+        setScoreText(new Text());
+        getScoreText().setText(Integer.toString(getScore()));
+        getScoreText().setFont(Font.font("Arial", FontWeight.BOLD, 80));
+        StackPane.setAlignment(getScoreText(), Pos.TOP_LEFT); 
+        StackPane.setMargin(getScoreText(), new Insets(10));
     }
     public static Player getInstance() {
         if (instance == null) {instance = new Player();}
@@ -46,5 +46,17 @@ public class Player extends ImageView {
     }
     public int getHearts() {
         return hearts;
+    }
+
+    public Text getScoreText() {
+        return scoreText;
+    }
+
+    public void setScoreText(Text scoreText) {
+        this.scoreText = scoreText;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

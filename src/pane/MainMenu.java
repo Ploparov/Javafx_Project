@@ -3,21 +3,11 @@ package pane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.Box;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import utils.Goto;
-
-import java.io.File;
 
 public class MainMenu extends StackPane {
 
@@ -34,7 +24,7 @@ public class MainMenu extends StackPane {
     }
 
     public void setBackGround(){
-        Image image = new Image("Background/kittenChoreBackground.png"); // Replace with the actual path to your image
+        Image image = new Image("Background/kittenChoreBackground.png");
         BackgroundSize backgroundSize = new BackgroundSize(1.0, 1.0, true, true, false, false);
         BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         this.setBackground(new Background(backgroundImage));
@@ -52,7 +42,7 @@ public class MainMenu extends StackPane {
 
     public void quitGameButton(){
         Button quitGame = new Button("Quit Game");
-        quitGame.setOnMouseClicked(mouseEvent -> {System.exit(0);}); // Exit the application when the button is clicked
+        quitGame.setOnMouseClicked(mouseEvent -> {System.exit(0);});
         quitGame.setMinHeight(50);
         quitGame.setMinWidth(200);
         quitGame.setFont(Font.font("System", FontWeight.BOLD, 24));

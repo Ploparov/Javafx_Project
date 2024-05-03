@@ -19,8 +19,8 @@ public class GroupObjectActivable extends Group {
         && player.getTranslateY() <= this.getTranslateY() + 100)
         {
             ColorAdjust colorAdjust = new ColorAdjust();
-            colorAdjust.setBrightness(0.2); // Adjust brightness
-            colorAdjust.setContrast(0.1); // Adjust contrast
+            colorAdjust.setBrightness(0.2); 
+            colorAdjust.setContrast(0.1); 
             this.setEffect(colorAdjust);
             return true;
         }

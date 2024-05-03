@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameMap extends StackPane {
-    final int tileSize = 48; //16*16*3
+    final int tileSize = 48;
     final int screenWidth = tileSize * 16;
     final int screenHeight = tileSize * 12;
     public Player player = Player.getInstance();
@@ -49,10 +49,10 @@ public class GameMap extends StackPane {
     private final Label xy = new Label();
     private final List<AnimationTimer> timers = new ArrayList<>();
     private final Text timeText = new Text();
-    private final double minX = -285.0; // Minimum x value
-    private final double maxX = 280.0; // Maximum x value
-    private final double minY = -80.0; // Minimum y value
-    private final double maxY = 140.0; // Maximum y value
+    private final double minX = -285.0;
+    private final double maxX = 280.0;
+    private final double minY = -80.0;
+    private final double maxY = 140.0;
     private static GameMap instance;
     public GameMap() {
         HouseFloor();
@@ -158,7 +158,6 @@ public class GameMap extends StackPane {
                 }
                 if(Player.getInstance().getHearts()==0){
                     TimerManager.getInstance().stopAll();
-                    System.out.println("Game ended. Score: " + getScoreTime());
                     Goto.gameOverPage(getScoreTime());
                 }
             }
@@ -241,11 +240,9 @@ public class GameMap extends StackPane {
         if ( !(isMovingLeft() || isMovingRight() || isMovingUp() || isMovingDown()) ) {
             long elapsedTime = now - getLastPressedTime();
             if (elapsedTime >= 500_000_000) {
-                // 100_000_000 คือ 0.1 วินาทีในหน่วย nano seconds
-                // ตรวจสอบให้แน่ใจว่า currentFrameIndex ไม่เกินขนาดของอาร์เรย์ CR_front
                 getPlayer().setImage(new Image(getPlayer().CIdle[getCurrentFrameIndex() % 2]));
                 setCurrentFrameIndex(getCurrentFrameIndex()+1);
-                setLastPressedTime(now); // รีเซ็ตเวลาล่าสุดเพื่อนับเวลาใหม่
+                setLastPressedTime(now);
             }
         }
     }

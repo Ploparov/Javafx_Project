@@ -9,7 +9,6 @@ public class main extends Application {
     }
     @Override
     public void start(Stage primaryStage) {
-        //Scene scene = new Scene(map.getMap(), 700, 700);
         Scene scene = new Scene(RootPane.getRootPane(), 1550, 800);
         primaryStage.setScene(scene);
         primaryStage.show();

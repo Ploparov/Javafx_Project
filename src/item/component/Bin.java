@@ -1,3 +1,4 @@
+
 package item.component;
 
 import Game.Player;
@@ -23,66 +24,110 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
 
     public Bin() {
         super("Component/bin/bin1.png");
-        alert = new ImageView("UI/Wait/WaitRed/WaitRed1.png");
-        alert.setFitWidth(250);
-        alert.setFitHeight(250);
-        alert.setTranslateX(200);
-        alert.setTranslateY(-100);
-        getChildren().add(alert);
-        alert.setVisible(false);
-        lastUpdateTime = System.nanoTime();
+        alert();
+        getAlert().setVisible(false);
+        setLastUpdateTime(System.nanoTime());
     }
 
     @Override
     public void taskAlert() {
-        currentWaitFrameIndex = 0;
-        isAlert = true;
-        this.instance.setImage(new Image("Component/bin/bin1.png"));
-        alert.setVisible(false);
+        setCurrentWaitFrameIndex(0);
+        setIsAlert(true);
+        this.getInstance().setImage(new Image("Component/bin/bin1.png"));
+        getAlert().setVisible(false);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                long elapsedTime = now - lastUpdateTime;
-                if (elapsedTime >= 500_000_000 * multiply) { // 100 milliseconds in nanoseconds
-                    currentWaitFrameIndex++;
-                    alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
-                    if (currentWaitFrameIndex >= 17) {
+                long elapsedTime = now - getLastUpdateTime();
+                if (elapsedTime >= 500_000_000 * getMultiply()) {
+                    setCurrentWaitFrameIndex(getCurrentWaitFrameIndex()+1);
+                    getAlert().setImage(new Image(getWaitRedImage()[getCurrentWaitFrameIndex() % 17]));
+                    if (getCurrentWaitFrameIndex() >= 17) {
                         Player.getInstance().decreaseHearts();
-                        currentWaitFrameIndex = 0;
-                        alert.setVisible(true);
-                        instance.setImage(new Image("Component/bin/bin2.png"));
-                        stop(); // Stop the AnimationTimer
-                    }
-                    else if(!isAlert){
-                        currentWaitFrameIndex = 0;
-                        isAlert = true;
+                        setCurrentWaitFrameIndex(0);
+                        getAlert().setVisible(true);
+                        getInstance().setImage(new Image("Component/bin/bin2.png"));
                         stop();
                     }
-                    lastUpdateTime = now; // Reset the last update time for timing
+                    else if(!isAlert()){
+                        setCurrentWaitFrameIndex(0);
+                        setIsAlert(true);
+                        stop();
+                    }
+                    setLastUpdateTime(now);
                 }
             }
         };
-        // Define the Timeline with a KeyFrame that starts the AnimationTimer every 2 seconds
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3 + Math.random()), event -> {
                 timer.start();
-                System.out.println("MARK");
-                alert.setVisible(true);
-                instance.setImage(new Image("Component/bin/bin2.png"));
+                getAlert().setVisible(true);
+                getInstance().setImage(new Image("Component/bin/bin2.png"));
         }));
-        timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
+        timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         TimerManager.getInstance().addTimer(timer);
         TimerManager.getInstance().addTimeline(timeline);
     }
+
+    public void alert(){
+        setAlert(new ImageView("UI/Wait/WaitRed/WaitRed1.png"));
+        getAlert().setFitWidth(250);
+        getAlert().setFitHeight(250);
+        getAlert().setTranslateX(200);
+        getAlert().setTranslateY(-100);
+        getChildren().add(getAlert());
+    }
+
     @Override
     public void Active() {
-        if(isAlert) {
-            multiply *= 0.9;
-            isAlert = false;
-            alert.setVisible(false);
-            this.instance.setImage(new Image("Component/bin/bin1.png"));
+        if(isAlert()) {
+            setMultiply(getMultiply()*0.9);
+            setIsAlert(false);
+            getAlert().setVisible(false);
+            this.getInstance().setImage(new Image("Component/bin/bin1.png"));
         }
     }
 
+    public ImageView getAlert() {
+        return alert;
+    }
+    public void setAlert(ImageView alert) {
+        this.alert = alert;
+    }
 
+    public boolean isAlert() {
+        return isAlert;
+    }
+
+    public void setIsAlert(boolean alert) {
+        isAlert = alert;
+    }
+
+    public long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(long lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public int getCurrentWaitFrameIndex() {
+        return currentWaitFrameIndex;
+    }
+
+    public void setCurrentWaitFrameIndex(int currentWaitFrameIndex) {
+        this.currentWaitFrameIndex = currentWaitFrameIndex;
+    }
+
+    public double getMultiply() {
+        return multiply;
+    }
+
+    public void setMultiply(double multiply) {
+        this.multiply = multiply;
+    }
+
+    public String[] getWaitRedImage() {
+        return waitRedImage;
+    }
 }

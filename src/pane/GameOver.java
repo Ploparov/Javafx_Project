@@ -20,8 +20,8 @@ public class GameOver extends StackPane {
 
     public void gameOverText(){
         Label gameOverLabel = new Label("GAME OVER");
-        gameOverLabel.setFont(Font.font("Arial", FontWeight.BOLD, 50)); // Set font to Arial, bold, size 50
-        gameOverLabel.setAlignment(Pos.CENTER); // Center align the label
+        gameOverLabel.setFont(Font.font("Arial", FontWeight.BOLD, 50));
+        gameOverLabel.setAlignment(Pos.CENTER);
         getVbox().getChildren().add(gameOverLabel);
     }
 

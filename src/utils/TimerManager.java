@@ -11,33 +11,33 @@ public class TimerManager {
     private List<Timeline> timelines;
 
     private TimerManager() {
-        timers = new ArrayList<>();
-        timelines = new ArrayList<>();
+        setTimers(new ArrayList<>());
+        setTimelines(new ArrayList<>());
     }
 
     public static TimerManager getInstance() {
         if (instance == null) {
-            instance = new TimerManager();
+            setInstance(new TimerManager());
         }
         return instance;
     }
 
     public void addTimer(AnimationTimer timer) {
-        timers.add(timer);
+        getTimers().add(timer);
     }
 
     public void addTimeline(Timeline timeline) {
-        timelines.add(timeline);
+        getTimelines().add(timeline);
     }
 
     public void stopAllTimers() {
-        for (AnimationTimer timer : timers) {
+        for (AnimationTimer timer : getTimers()) {
             timer.stop();
         }
     }
 
     public void stopAllTimelines() {
-        for (Timeline timeline : timelines) {
+        for (Timeline timeline : getTimelines()) {
             timeline.stop();
         }
     }
@@ -45,5 +45,25 @@ public class TimerManager {
     public void stopAll() {
         stopAllTimers();
         stopAllTimelines();
+    }
+
+    public static void setInstance(TimerManager instance) {
+        TimerManager.instance = instance;
+    }
+
+    public List<AnimationTimer> getTimers() {
+        return timers;
+    }
+
+    public void setTimers(List<AnimationTimer> timers) {
+        this.timers = timers;
+    }
+
+    public List<Timeline> getTimelines() {
+        return timelines;
+    }
+
+    public void setTimelines(List<Timeline> timelines) {
+        this.timelines = timelines;
     }
 }

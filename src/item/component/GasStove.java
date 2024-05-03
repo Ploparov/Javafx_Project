@@ -15,7 +15,7 @@ import utils.TimerManager;
 
 public class GasStove extends GroupObjectActivable implements taskAble, activeAble {
 
-    private final ImageView alert;
+    private ImageView alert;
     private boolean isAlert = false;
     private long lastUpdateTime;
     private int holdAction = 0;
@@ -25,34 +25,37 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
     private final String[] waitBlueImage = {"UI/Wait/WaitBlue/WaitBlue1.png", "UI/Wait/WaitBlue/WaitBlue2.png", "UI/Wait/WaitBlue/WaitBlue3.png", "UI/Wait/WaitBlue/WaitBlue4.png", "UI/Wait/WaitBlue/WaitBlue5.png", "UI/Wait/WaitBlue/WaitBlue6.png", "UI/Wait/WaitBlue/WaitBlue7.png", "UI/Wait/WaitBlue/WaitBlue8.png", "UI/Wait/WaitBlue/WaitBlue9.png", "UI/Wait/WaitBlue/WaitBlue10.png", "UI/Wait/WaitBlue/WaitBlue11.png", "UI/Wait/WaitBlue/WaitBlue12.png", "UI/Wait/WaitBlue/WaitBlue13.png", "UI/Wait/WaitBlue/WaitBlue14.png", "UI/Wait/WaitBlue/WaitBlue15.png", "UI/Wait/WaitBlue/WaitBlue16.png", "UI/Wait/WaitBlue/WaitBlue17.png"};
     public GasStove() {
         super("Component/GasStove/GasStove1.png");
-        alert = new ImageView("UI/Wait/WaitRed/WaitRed1.png");
-        alert.setFitWidth(200);
-        alert.setFitHeight(200);
-        alert.setTranslateX(200);
-        alert.setTranslateY(-100);
-        getChildren().add(alert);
-        alert.setVisible(false);
-        lastUpdateTime = System.nanoTime();
+        alert();
+        setLastUpdateTime(System.nanoTime());
     }
 
+    public void alert(){
+        setAlert(new ImageView("UI/Wait/WaitRed/WaitRed1.png"));
+        getAlert().setFitWidth(200);
+        getAlert().setFitHeight(200);
+        getAlert().setTranslateX(200);
+        getAlert().setTranslateY(-100);
+        getChildren().add(getAlert());
+        getAlert().setVisible(false);
+    }
     @Override
     public void taskAlert() {
-        isAlert = true;
-        this.instance.setImage(new Image("Component/GasStove/GasStove1.png"));
-        alert.setVisible(false);
-        alert.setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
+        setIsAlert(true);
+        this.getInstance().setImage(new Image("Component/GasStove/GasStove1.png"));
+        getAlert().setVisible(false);
+        getAlert().setImage(new Image("UI/Wait/WaitRed/WaitRed1.png"));
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(isAlert){AlertAnimation(now);}
+                if(isAlert()){AlertAnimation(now);}
                 else {ActiveAnimation();}
             }
         };
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5 + Math.random()*10), event -> {
-            isAlert= true;
+            setIsAlert(true);
             timer.start();
         }));
-        timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
+        timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
         TimerManager.getInstance().addTimer(timer);
@@ -61,41 +64,97 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
 
     public void AlertAnimation(long now){
 
-        alert.setVisible(true);
+        getAlert().setVisible(true);
 
-        long elapsedTime = now - lastUpdateTime;
-        if (elapsedTime >= 500_000_000) { // 100 milliseconds in nanoseconds
-            alert.setImage(new Image(waitRedImage[currentWaitFrameIndex % 17]));
-            currentWaitFrameIndex++;
-            if (currentWaitFrameIndex >= 17) {
+        long elapsedTime = now - getLastUpdateTime();
+        if (elapsedTime >= 500_000_000) {
+            getAlert().setImage(new Image(getWaitRedImage()[getCurrentWaitFrameIndex() % 17]));
+            setCurrentWaitFrameIndex(getCurrentWaitFrameIndex() + 1);
+            if (getCurrentWaitFrameIndex() >= 17) {
                 Player.getInstance().decreaseHearts();
-                instance.setImage(new Image("Component/GasStove/GasStove1.png"));
-                currentWaitFrameIndex = 0;
-                alert.setVisible(false);
+                getInstance().setImage(new Image("Component/GasStove/GasStove1.png"));
+                setCurrentWaitFrameIndex(0);
+                getAlert().setVisible(false);
             }
-            lastUpdateTime = now; // Reset the last update time for timing
+            setLastUpdateTime(now);
         }
     }
 
     public void ActiveAnimation(){
-        if(currentWaitFrameIndex==0){instance.setImage(new Image("Component/GasStove/GasStove1.png"));}
-        if(holdAction >= 20){
-            currentActiveFrameIndex++;
-            instance.setImage(new Image("Component/GasStove/GasStove2.png"));
-            holdAction = 0;
+        if(getCurrentWaitFrameIndex() == 0){getInstance().setImage(new Image("Component/GasStove/GasStove1.png"));}
+        if(getHoldAction() >= 20){
+            setCurrentActiveFrameIndex(getCurrentActiveFrameIndex() + 1);
+            getInstance().setImage(new Image("Component/GasStove/GasStove2.png"));
+            setHoldAction(0);
         }
-        alert.setImage(new Image(waitBlueImage[currentActiveFrameIndex % 17]));
-        if (currentActiveFrameIndex >= 17) {
-            instance.setImage(new Image("Component/GasStove/GasStove1.png"));
-            currentActiveFrameIndex = 0;
-            currentWaitFrameIndex = 0;
-            alert.setVisible(false);
+        getAlert().setImage(new Image(getWaitBlueImage()[getCurrentActiveFrameIndex() % 17]));
+        if (getCurrentActiveFrameIndex() >= 17) {
+            getInstance().setImage(new Image("Component/GasStove/GasStove1.png"));
+            setCurrentActiveFrameIndex(0);
+            setCurrentWaitFrameIndex(0);
+            getAlert().setVisible(false);
         }
     }
 
     @Override
     public void Active() {
-        isAlert = false;
-        holdAction++;
+        setIsAlert(false);
+        setHoldAction(getHoldAction() + 1);
+    }
+
+    public ImageView getAlert() {
+        return alert;
+    }
+
+    public void setAlert(ImageView alert) {
+        this.alert = alert;
+    }
+
+    public boolean isAlert() {
+        return isAlert;
+    }
+
+    public void setIsAlert(boolean alert) {
+        isAlert = alert;
+    }
+
+    public long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(long lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public int getHoldAction() {
+        return holdAction;
+    }
+
+    public void setHoldAction(int holdAction) {
+        this.holdAction = holdAction;
+    }
+
+    public int getCurrentWaitFrameIndex() {
+        return currentWaitFrameIndex;
+    }
+
+    public void setCurrentWaitFrameIndex(int currentWaitFrameIndex) {
+        this.currentWaitFrameIndex = currentWaitFrameIndex;
+    }
+
+    public int getCurrentActiveFrameIndex() {
+        return currentActiveFrameIndex;
+    }
+
+    public void setCurrentActiveFrameIndex(int currentActiveFrameIndex) {
+        this.currentActiveFrameIndex = currentActiveFrameIndex;
+    }
+
+    public String[] getWaitRedImage() {
+        return waitRedImage;
+    }
+
+    public String[] getWaitBlueImage() {
+        return waitBlueImage;
     }
 }
