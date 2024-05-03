@@ -46,8 +46,6 @@ import java.util.List;
     private int scoreTime = 0;
     private Timeline gameTimer;
     private List<ImageView> hearts;
-    private final Label xy = new Label();
-    private final List<AnimationTimer> timers = new ArrayList<>();
     private final Text timeText = new Text();
     private final double minX = -285.0;
     private final double maxX = 280.0;
