@@ -341,13 +341,11 @@ import java.util.List;
     }
 
     public void place(String s,double w,double h,double x,double y){
-//        ImageView obj = new ImageView(s);
         Object obj = new Object(s);
         obj.setFitWidth(w);
         obj.setFitHeight(h);
         obj.setTranslateX(x);
         obj.setTranslateY(y);
-
         getChildren().add(obj);
 
     }
