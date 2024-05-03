@@ -23,8 +23,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameMap extends StackPane {
-    final int tileSize = 48;
+    public class GameMap extends StackPane {
+        private final int tileSize = 48;
     final int screenWidth = tileSize * 16;
     final int screenHeight = tileSize * 12;
     public Player player = Player.getInstance();
