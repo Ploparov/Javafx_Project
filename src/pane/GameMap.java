@@ -1,6 +1,6 @@
-
 package pane;
 
+import Sound.SoundMP3;
 import item.GroupObjectActivable;
 import item.Object;
 import item.component.*;
@@ -20,7 +20,6 @@ import javafx.util.Duration;
 import utils.Goto;
 import utils.TimerManager;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +56,7 @@ public class GameMap extends StackPane {
     double maxY = 140.0; // Maximum y value
     //private static GameMap instance;
     SoundMP3 sound = new SoundMP3();
+    SoundMP3 sound2 = new SoundMP3();
     public GameMap() {
         System.out.println("HELLO");
         playEffect(3);
@@ -248,7 +248,7 @@ public class GameMap extends StackPane {
             } else if (event.getCode() == KeyCode.E){
                 buttonE.setImage(new Image("UI/ebutton/E_Button2.png"));
                 isPressE = true;
-            }
+        }
         });
 
         this.setOnKeyReleased(event -> {
@@ -289,6 +289,7 @@ public class GameMap extends StackPane {
                 // Check if the player's hearts have decreased
                 if (Player.getInstance().getHearts() < hearts.size()) {
                     // Update the hearts on the game map
+                    playEffect2(4);
                     updateHearts();
                 }
                 if(Player.getInstance().getHearts()==0){
@@ -296,9 +297,7 @@ public class GameMap extends StackPane {
                     System.out.println("Game ended. Score: " + scoreTime);
                     Goto.gameOverPage(scoreTime);
                     TimerManager.getInstance().stopAll();
-
                 }
-
             }
         };
         TimerManager.getInstance().addTimer(timer);
@@ -414,7 +413,7 @@ public class GameMap extends StackPane {
 
     public void movePlayer() {
         if (movingUp && (((player.getTranslateY() >= -140 && player.getTranslateX() <= 360) || ((player.getTranslateY()>=-30) && (player.getTranslateX()>=360 && player.getTranslateX()<=560))) || (player.getTranslateX()>=560)
-        )){
+                )){
             player.setTranslateY(player.getTranslateY() - 5);
         }
         if (movingDown && ((player.getTranslateY() < 365) && !(player.getTranslateX()>450 && player.getTranslateX()<560) || (player.getTranslateY()>-40 && player.getTranslateY()<25))) {
@@ -533,6 +532,11 @@ public class GameMap extends StackPane {
         sound.play();
     }
     public void stopEffect(){
+
         sound.stop();
+    }
+    public void playEffect2(int i) {
+        sound2.setFile(i);
+        sound2.play();
     }
 }

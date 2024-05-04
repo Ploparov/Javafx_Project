@@ -1,4 +1,4 @@
-package pane;
+package Sound;
 
 import java.net.URL;
 import javafx.scene.media.Media;
@@ -18,13 +18,8 @@ public class SoundMP3 {
     }
 
     public void setFile(int i) {
-        try {
-            Media sound = new Media(soundURL[i].toString());
-            mediaPlayer = new MediaPlayer(sound);
-        } catch (Exception e) {
-            System.out.println("music file not found " + soundURL[i]);
-            e.printStackTrace();
-        }
+        Media sound = new Media(soundURL[i].toString());
+        mediaPlayer = new MediaPlayer(sound);
     }
     public void play(){
         mediaPlayer.play();

@@ -1,4 +1,4 @@
-package pane;
+package Sound;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -22,11 +22,10 @@ public class SoundW {
     public void setFile(int i) {
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
-            clip =AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(ais);
-        } catch (Exception e) {
-
         }
+        catch (Exception e) {}
     }
     public void play(){
         clip.start();

@@ -10,7 +10,7 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import pane.SoundW;
+import Sound.SoundW;
 import utils.TimerManager;
 
 public class Sink extends GroupObjectActivable implements taskAble, activeAble {
@@ -100,8 +100,5 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
     public void playEffect(int i) {
         soundW.setFile(i);
         soundW.play();
-    }
-    public void stopEffect(){
-        soundW.stop();
     }
 }

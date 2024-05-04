@@ -9,14 +9,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import pane.SoundMP3;
+import Sound.SoundMP3;
 import utils.TimerManager;
 
-import javax.print.attribute.standard.Media;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class Rider extends GroupObjectActivable implements taskAble, activeAble {

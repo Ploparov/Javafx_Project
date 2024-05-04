@@ -10,8 +10,7 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import pane.SoundMP3;
-import pane.SoundW;
+import Sound.SoundMP3;
 import utils.TimerManager;
 
 
@@ -105,8 +104,5 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
     public void playEffect(int i) {
         sound.setFile(i);
         sound.play();
-    }
-    public void stopEffect(){
-        sound.stop();
     }
 }
