@@ -55,6 +55,7 @@ public class GameMap extends StackPane {
     double minY = -80.0; // Minimum y value
     double maxY = 140.0; // Maximum y value
     private static GameMap instance;
+    SoundMP3 sound = new SoundMP3();
     public GameMap() {
         player.setTranslateX(0);
         player.setTranslateY(0);
@@ -272,6 +273,7 @@ public class GameMap extends StackPane {
     }
 
     public void startAnimation() {
+        playEffect(3);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -282,7 +284,6 @@ public class GameMap extends StackPane {
                 ifAnimationIdle(now);
                 showE();
                 checkPosition();
-
                 // Check if the player's hearts have decreased
                 if (Player.getInstance().getHearts() < hearts.size()) {
                     // Update the hearts on the game map
@@ -292,12 +293,12 @@ public class GameMap extends StackPane {
                     TimerManager.getInstance().stopAll();
                     System.out.println("Game ended. Score: " + scoreTime);
                     Goto.gameOverPage(scoreTime);
+                    stopEffect();
                 }
 
             }
         };
         timer.start();
-
         TimerManager.getInstance().addTimer(timer);
     }
 
@@ -523,5 +524,12 @@ public class GameMap extends StackPane {
         obj.setTranslateY(y);
         obj.setOpacity(o);
         getChildren().add(obj);
+    }
+    public void playEffect(int i) {
+        sound.setFile(i);
+        sound.play();
+    }
+    public void stopEffect(){
+        sound.stop();
     }
 }

@@ -13,6 +13,8 @@ public class SoundMP3 {
         soundURL[0] = getClass().getResource("/SFX/Cooking.mp3");
         soundURL[1] = getClass().getResource("/SFX/Motorcycle.mp3");
         soundURL[2] = getClass().getResource("/SFX/PaperBin.mp3");
+        soundURL[3] = getClass().getResource("/SFX/ThemeSong.m4a");
+        soundURL[4] = getClass().getResource("/SFX/beep.mp3");
     }
 
     public void setFile(int i) {
