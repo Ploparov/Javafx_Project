@@ -1,3 +1,4 @@
+
 package pane;
 
 import item.GroupObjectActivable;
@@ -54,9 +55,11 @@ public class GameMap extends StackPane {
     double maxX = 280.0; // Maximum x value
     double minY = -80.0; // Minimum y value
     double maxY = 140.0; // Maximum y value
-    private static GameMap instance;
+    //private static GameMap instance;
     SoundMP3 sound = new SoundMP3();
     public GameMap() {
+        System.out.println("HELLO");
+        playEffect(3);
         player.setTranslateX(0);
         player.setTranslateY(0);
         HouseFloor();
@@ -185,12 +188,12 @@ public class GameMap extends StackPane {
         xy.setTranslateX(player.getTranslateX());
     }
 
-    public static GameMap getInstance() {
-        if (instance == null) {
-            instance = new GameMap();
-        }
-        return instance;
-    }
+//    public static GameMap getInstance() {
+//        if (instance == null) {
+//            instance = new GameMap();
+//        }
+//        return instance;
+//    }
 
     public void updateHearts() {
         // Remove all heart images from the game map
@@ -245,7 +248,7 @@ public class GameMap extends StackPane {
             } else if (event.getCode() == KeyCode.E){
                 buttonE.setImage(new Image("UI/ebutton/E_Button2.png"));
                 isPressE = true;
-        }
+            }
         });
 
         this.setOnKeyReleased(event -> {
@@ -273,7 +276,6 @@ public class GameMap extends StackPane {
     }
 
     public void startAnimation() {
-        playEffect(3);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -290,16 +292,17 @@ public class GameMap extends StackPane {
                     updateHearts();
                 }
                 if(Player.getInstance().getHearts()==0){
-                    TimerManager.getInstance().stopAll();
+                    stopEffect();
                     System.out.println("Game ended. Score: " + scoreTime);
                     Goto.gameOverPage(scoreTime);
-                    stopEffect();
+                    TimerManager.getInstance().stopAll();
+
                 }
 
             }
         };
-        timer.start();
         TimerManager.getInstance().addTimer(timer);
+        timer.start();
     }
 
     private void startGameTimer() {
@@ -411,7 +414,7 @@ public class GameMap extends StackPane {
 
     public void movePlayer() {
         if (movingUp && (((player.getTranslateY() >= -140 && player.getTranslateX() <= 360) || ((player.getTranslateY()>=-30) && (player.getTranslateX()>=360 && player.getTranslateX()<=560))) || (player.getTranslateX()>=560)
-                )){
+        )){
             player.setTranslateY(player.getTranslateY() - 5);
         }
         if (movingDown && ((player.getTranslateY() < 365) && !(player.getTranslateX()>450 && player.getTranslateX()<560) || (player.getTranslateY()>-40 && player.getTranslateY()<25))) {

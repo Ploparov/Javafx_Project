@@ -14,5 +14,4 @@ public class main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
 }
