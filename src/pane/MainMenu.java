@@ -1,5 +1,6 @@
 package pane;
 
+import Sound.SoundW;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,9 +13,10 @@ import utils.Goto;
 public class MainMenu extends StackPane {
 
     private VBox vbox;
+    private SoundW soundW = new SoundW();
 
     public MainMenu(){
-
+        playEffect(0);
         initialVbox();
         setBackGround();
         startGameButton();
@@ -55,6 +57,10 @@ public class MainMenu extends StackPane {
         getVbox().setAlignment(Pos.CENTER_LEFT);
         getVbox().setPadding(new Insets(0, 0, 0, 150));
         getChildren().add(getVbox());
+    }
+    public void playEffect(int i) {
+        soundW.setFile(i);
+        soundW.play();
     }
 
     public void setVbox(VBox vbox) {

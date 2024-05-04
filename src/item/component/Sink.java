@@ -3,6 +3,7 @@ package item.component;
 import Game.Player;
 import Interface.activeAble;
 import Interface.taskAble;
+import Sound.SoundW;
 import item.GroupObjectActivable;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -21,7 +22,7 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
     private int currentActiveFrameIndex = 0;
     private final String[] waitRedImage = {"UI/Wait/WaitRed/WaitRed1.png", "UI/Wait/WaitRed/WaitRed2.png", "UI/Wait/WaitRed/WaitRed3.png", "UI/Wait/WaitRed/WaitRed4.png", "UI/Wait/WaitRed/WaitRed5.png", "UI/Wait/WaitRed/WaitRed6.png", "UI/Wait/WaitRed/WaitRed7.png", "UI/Wait/WaitRed/WaitRed8.png", "UI/Wait/WaitRed/WaitRed9.png", "UI/Wait/WaitRed/WaitRed10.png", "UI/Wait/WaitRed/WaitRed11.png", "UI/Wait/WaitRed/WaitRed12.png", "UI/Wait/WaitRed/WaitRed13.png", "UI/Wait/WaitRed/WaitRed14.png", "UI/Wait/WaitRed/WaitRed15.png", "UI/Wait/WaitRed/WaitRed16.png", "UI/Wait/WaitRed/WaitRed17.png"};
     private final String[] waitBlueImage = {"UI/Wait/WaitBlue/WaitBlue1.png", "UI/Wait/WaitBlue/WaitBlue2.png", "UI/Wait/WaitBlue/WaitBlue3.png", "UI/Wait/WaitBlue/WaitBlue4.png", "UI/Wait/WaitBlue/WaitBlue5.png", "UI/Wait/WaitBlue/WaitBlue6.png", "UI/Wait/WaitBlue/WaitBlue7.png", "UI/Wait/WaitBlue/WaitBlue8.png", "UI/Wait/WaitBlue/WaitBlue9.png", "UI/Wait/WaitBlue/WaitBlue10.png", "UI/Wait/WaitBlue/WaitBlue11.png", "UI/Wait/WaitBlue/WaitBlue12.png", "UI/Wait/WaitBlue/WaitBlue13.png", "UI/Wait/WaitBlue/WaitBlue14.png", "UI/Wait/WaitBlue/WaitBlue15.png", "UI/Wait/WaitBlue/WaitBlue16.png", "UI/Wait/WaitBlue/WaitBlue17.png"};
-
+    private SoundW soundW = new SoundW();
     public Sink() {
         super("Component/Sink/sink_withoutbowl.png");
         alert();
@@ -54,6 +55,7 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5 + Math.random()*10), event -> {
             setIsAlert(true);
             timer.start();
+            playEffect(1);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -98,6 +100,11 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
     public void Active() {
         setIsAlert(false);
         setHoldAction(getHoldAction() + 1);
+    }
+
+    public void playEffect(int i) {
+        soundW.setFile(i);
+        soundW.play();
     }
 
     public ImageView getAlert() {

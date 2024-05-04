@@ -1,5 +1,6 @@
 package pane;
 
+import Sound.SoundMP3;
 import item.GroupObjectActivable;
 import item.Object;
 import item.component.*;
@@ -51,8 +52,10 @@ import java.util.List;
     private final double maxX = 280.0;
     private final double minY = -80.0;
     private final double maxY = 140.0;
-    private static GameMap instance;
+    private SoundMP3 sound = new SoundMP3();
+    private SoundMP3 sound2 = new SoundMP3();
     public GameMap() {
+        playEffect(3);
         HouseFloor();
         WallBack();
         window();
@@ -78,12 +81,6 @@ import java.util.List;
     }
 
 
-    public static GameMap getInstance() {
-        if (instance == null) {
-            setInstance(new GameMap());
-        }
-        return instance;
-    }
 
     public void updateHearts() {
         getChildren().removeAll(getHearts());
@@ -152,9 +149,11 @@ import java.util.List;
                 ifAnimationIdle(now);
                 showE();
                 if (Player.getInstance().getHearts() < getHearts().size()) {
+                    playEffect2(4);
                     updateHearts();
                 }
                 if(Player.getInstance().getHearts()==0){
+                    stopEffect();
                     TimerManager.getInstance().stopAll();
                     Goto.gameOverPage(getScoreTime());
                 }
@@ -480,7 +479,17 @@ import java.util.List;
        Player.getInstance().setHearts(3);
        setHearts(new ArrayList<>());
    }
-
+   public void playEffect(int i) {
+        sound.setFile(i);
+        sound.play();
+    }
+    public void stopEffect(){
+        sound.stop();
+    }
+    public void playEffect2(int i) {
+        sound2.setFile(i);
+        sound2.play();
+    }
 
     public int getScreenWidth() {
         return screenWidth;
@@ -655,7 +664,4 @@ import java.util.List;
         return maxY;
     }
 
-    public static void setInstance(GameMap instance) {
-        GameMap.instance = instance;
-    }
 }

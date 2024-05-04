@@ -2,6 +2,7 @@
 package item.component;
 
 import Game.Player;
+import Sound.SoundMP3;
 import item.GroupObjectActivable;
 import Interface.taskAble;
 import Interface.activeAble;
@@ -21,7 +22,7 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
     private double multiply = 0.9;
     private final String[] waitRedImage = {"UI/Wait/WaitRed/WaitRed1.png", "UI/Wait/WaitRed/WaitRed2.png", "UI/Wait/WaitRed/WaitRed3.png", "UI/Wait/WaitRed/WaitRed4.png", "UI/Wait/WaitRed/WaitRed5.png", "UI/Wait/WaitRed/WaitRed6.png", "UI/Wait/WaitRed/WaitRed7.png", "UI/Wait/WaitRed/WaitRed8.png", "UI/Wait/WaitRed/WaitRed9.png", "UI/Wait/WaitRed/WaitRed10.png", "UI/Wait/WaitRed/WaitRed11.png", "UI/Wait/WaitRed/WaitRed12.png", "UI/Wait/WaitRed/WaitRed13.png", "UI/Wait/WaitRed/WaitRed14.png", "UI/Wait/WaitRed/WaitRed15.png", "UI/Wait/WaitRed/WaitRed16.png", "UI/Wait/WaitRed/WaitRed17.png"};
 
-
+    private SoundMP3 sound = new SoundMP3();
     public Bin() {
         super("Component/bin/bin1.png");
         alert();
@@ -62,6 +63,7 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
                 timer.start();
                 getAlert().setVisible(true);
                 getInstance().setImage(new Image("Component/bin/bin2.png"));
+                playEffect(2);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -88,6 +90,10 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
         }
     }
 
+    public void playEffect(int i) {
+        sound.setFile(i);
+        sound.play();
+    }
     public ImageView getAlert() {
         return alert;
     }
@@ -130,4 +136,5 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
     public String[] getWaitRedImage() {
         return waitRedImage;
     }
+
 }

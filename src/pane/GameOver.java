@@ -36,7 +36,6 @@ public class GameOver extends StackPane {
         Button start = new Button("Back to Main Menu");
         start.setOnMouseClicked(mouseEvent -> {
             Goto.MainMenuPage();
-            GameMap.getInstance().resetScore();
         });
         getVbox().getChildren().add(start);
     }

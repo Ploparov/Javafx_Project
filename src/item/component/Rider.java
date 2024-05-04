@@ -3,6 +3,7 @@ package item.component;
 import Game.Player;
 import Interface.activeAble;
 import Interface.taskAble;
+import Sound.SoundMP3;
 import item.GroupObjectActivable;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -19,6 +20,7 @@ public class Rider extends GroupObjectActivable implements taskAble, activeAble 
     private long lastUpdateTime;
     private int currentWaitFrameIndex = 0;
     private final String[] waitRedImage = {"UI/Wait/WaitRed/WaitRed1.png", "UI/Wait/WaitRed/WaitRed2.png", "UI/Wait/WaitRed/WaitRed3.png", "UI/Wait/WaitRed/WaitRed4.png", "UI/Wait/WaitRed/WaitRed5.png", "UI/Wait/WaitRed/WaitRed6.png", "UI/Wait/WaitRed/WaitRed7.png", "UI/Wait/WaitRed/WaitRed8.png", "UI/Wait/WaitRed/WaitRed9.png", "UI/Wait/WaitRed/WaitRed10.png", "UI/Wait/WaitRed/WaitRed11.png", "UI/Wait/WaitRed/WaitRed12.png", "UI/Wait/WaitRed/WaitRed13.png", "UI/Wait/WaitRed/WaitRed14.png", "UI/Wait/WaitRed/WaitRed15.png", "UI/Wait/WaitRed/WaitRed16.png", "UI/Wait/WaitRed/WaitRed17.png"};
+    private SoundMP3 sound = new SoundMP3();
     public Rider() {
         super("Component/Rider/foodcat.png");
         alert();
@@ -54,11 +56,13 @@ public class Rider extends GroupObjectActivable implements taskAble, activeAble 
                         getAlert().setVisible(false);
                         getInstance().setVisible(false);
                         stop();
+                        stopEffect();
                     }
                     else if(!isAlert()){
                         setCurrentWaitFrameIndex(0);
                         setIsAlert(true);
                         stop();
+                        stopEffect();
                     }
                     setLastUpdateTime(now);
                 }
@@ -69,7 +73,7 @@ public class Rider extends GroupObjectActivable implements taskAble, activeAble 
             timer.start();
             getAlert().setVisible(true);
             getInstance().setImage(new Image("Component/Rider/foodcat.png"));
-
+            playEffect(1);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -85,6 +89,13 @@ public class Rider extends GroupObjectActivable implements taskAble, activeAble 
         getAlert().setTranslateX(200);
         getAlert().setTranslateY(-100);
         getChildren().add(getAlert());
+    }
+    public void playEffect(int i) {
+        sound.setFile(i);
+        sound.play();
+    }
+    public void stopEffect(){
+        sound.stop();
     }
 
     public ImageView getAlert() {

@@ -4,6 +4,7 @@ import Game.Player;
 import Interface.activeAble;
 import Interface.taskAble;
 import item.GroupObjectActivable;
+import Sound.SoundW;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,6 +19,7 @@ public class WaterOnTheFloor extends GroupObjectActivable implements taskAble, a
     private long lastUpdateTime;
     private int currentWaitFrameIndex = 0;
     private final String[] waitRedImage = {"UI/Wait/WaitRed/WaitRed1.png", "UI/Wait/WaitRed/WaitRed2.png", "UI/Wait/WaitRed/WaitRed3.png", "UI/Wait/WaitRed/WaitRed4.png", "UI/Wait/WaitRed/WaitRed5.png", "UI/Wait/WaitRed/WaitRed6.png", "UI/Wait/WaitRed/WaitRed7.png", "UI/Wait/WaitRed/WaitRed8.png", "UI/Wait/WaitRed/WaitRed9.png", "UI/Wait/WaitRed/WaitRed10.png", "UI/Wait/WaitRed/WaitRed11.png", "UI/Wait/WaitRed/WaitRed12.png", "UI/Wait/WaitRed/WaitRed13.png", "UI/Wait/WaitRed/WaitRed14.png", "UI/Wait/WaitRed/WaitRed15.png", "UI/Wait/WaitRed/WaitRed16.png", "UI/Wait/WaitRed/WaitRed17.png"};
+    private SoundW soundW = new SoundW();
     public WaterOnTheFloor() {
         super("Component/WaterOnTheFloor/waterOnthefloor.png");
         alert();
@@ -68,6 +70,7 @@ public class WaterOnTheFloor extends GroupObjectActivable implements taskAble, a
             timer.start();
             getAlert().setVisible(true);
             getInstance().setImage(new Image("Component/WaterOnTheFloor/waterOnthefloor.png"));
+            playEffect(2);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -82,6 +85,11 @@ public class WaterOnTheFloor extends GroupObjectActivable implements taskAble, a
         getAlert().setVisible(false);
         this.setVisible(false);
     }
+    public void playEffect(int i) {
+        soundW.setFile(i);
+        soundW.play();
+    }
+
 
     public ImageView getAlert() {
         return alert;
