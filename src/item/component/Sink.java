@@ -51,7 +51,7 @@ public class Sink extends GroupObjectActivable implements taskAble, activeAble {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5 + Math.random()*10), event -> {
             isAlert= true;
             timer.start();
-            playEffect(2);
+            playEffect(1);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();

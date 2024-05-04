@@ -67,7 +67,7 @@ public class Bin extends GroupObjectActivable implements taskAble,activeAble{
                 System.out.println("MARK");
                 alert.setVisible(true);
                 instance.setImage(new Image("Component/bin/bin2.png"));
-                playEffect(6);
+                playEffect(3);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();

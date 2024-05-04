@@ -67,7 +67,7 @@ public class WaterOnTheFloor extends GroupObjectActivable implements taskAble, a
             timer.start();
             alert.setVisible(true);
             instance.setImage(new Image("Component/WaterOnTheFloor/waterOnthefloor.png"));
-            playEffect(4);
+            playEffect(2);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely
         timeline.play();

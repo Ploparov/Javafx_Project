@@ -83,7 +83,7 @@ public class GasStove extends GroupObjectActivable implements taskAble, activeAb
     public void ActiveAnimation(){
         if(currentWaitFrameIndex==0){instance.setImage(new Image("Component/GasStove/GasStove1.png"));}
         if(holdAction >= 20) {
-            playEffect(1);
+            playEffect(0);
             currentActiveFrameIndex++;
             instance.setImage(new Image("Component/GasStove/GasStove2.png"));
             holdAction = 0;

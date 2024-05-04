@@ -86,7 +86,7 @@ public class Rider extends GroupObjectActivable implements taskAble, activeAble 
             timer.start();
             alert.setVisible(true);
             instance.setImage(new Image("Component/Rider/foodcat.png"));
-            playEffect(5);
+            playEffect(1);
             //System.out.println("MARK");
         }));
         timeline.setCycleCount(Timeline.INDEFINITE); // The Timeline will loop indefinitely

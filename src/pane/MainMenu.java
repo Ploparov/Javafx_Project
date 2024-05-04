@@ -21,8 +21,10 @@ import java.io.File;
 
 public class MainMenu extends StackPane {
     private static MainMenu instance;
+    SoundW soundW = new SoundW();
 
     public MainMenu(){
+        playEffect(0);
 //        Button start = new Button("Start");
 //        start.setOnMouseClicked(mouseEvent -> {Goto.mapPage();});
 //        getChildren().add(start);
@@ -104,6 +106,14 @@ public class MainMenu extends StackPane {
             instance = new MainMenu();
         }
         return instance;
+
+    }
+    public void playEffect(int i) {
+        soundW.setFile(i);
+        soundW.play();
+    }
+    public void stopEffect(){
+        soundW.stop();
     }
 
 }

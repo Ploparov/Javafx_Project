@@ -14,11 +14,9 @@ public class SoundW {
     URL[] soundURL = new URL[10];
     public SoundW(){
         soundURL[0] = getClass().getResource("/SFX/Cat.wav");
-        soundURL[1] = getClass().getResource("/SFX/HotPan.wav");
-        soundURL[2] = getClass().getResource("/SFX/Plate.wav");
-        soundURL[3] = getClass().getResource("/SFX/Rider.wav");
-        soundURL[4] = getClass().getResource("/SFX/Water.wav");
-        soundURL[5] = getClass().getResource("/SFX/Bin.m4a");
+        soundURL[1] = getClass().getResource("/SFX/Plate.wav");
+        soundURL[2] = getClass().getResource("/SFX/Water.wav");
+        soundURL[3] = getClass().getResource("/SFX/Bin.m4a");
             }
 
     public void setFile(int i) {
